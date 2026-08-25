@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>時事おしゃべりネタ帳 — アーカイブ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20rx%3D%2722%27%20fill%3D%27%23f6f2e7%27/%3E%3Ctext%20x%3D%2750%27%20y%3D%2758%27%20font-size%3D%2756%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3E%F0%9F%92%AC%3C/text%3E%3C/svg%3E" />
+<style>
+  :root {
+    --bg: #f6f2e7;
+    --bg-blob-1: #f3d9a6;
+    --bg-blob-2: #b9d6de;
+    --card: #ffffff;
+    --card-border: #e8ddc4;
+    --ink: #2e2a22;
+    --ink-soft: #8c8368;
+    --amber: #d98a2b;
+    --amber-ink: #ffffff;
+    --steel: #3f7d8c;
+    --sage: #6a9c5f;
+    --shadow: rgba(60, 45, 20, 0.14);
+    --focus: #3f7d8c;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1c1912;
+      --bg-blob-1: #4a3a1c;
+      --bg-blob-2: #1c343c;
+      --card: #262119;
+      --card-border: #3a3226;
+      --ink: #f2ead9;
+      --ink-soft: #b8ac8e;
+      --amber: #f0a94a;
+      --amber-ink: #2a1d08;
+      --steel: #7fc0cf;
+      --sage: #8fc47f;
+      --shadow: rgba(0, 0, 0, 0.4);
+      --focus: #7fc0cf;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #1c1912;
+    --bg-blob-1: #4a3a1c;
+    --bg-blob-2: #1c343c;
+    --card: #262119;
+    --card-border: #3a3226;
+    --ink: #f2ead9;
+    --ink-soft: #b8ac8e;
+    --amber: #f0a94a;
+    --amber-ink: #2a1d08;
+    --steel: #7fc0cf;
+    --sage: #8fc47f;
+    --shadow: rgba(0, 0, 0, 0.4);
+    --focus: #7fc0cf;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", "Hiragino Sans", sans-serif;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .bg-blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.55;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .bg-blob.one { width: 30rem; height: 30rem; top: -12rem; right: -10rem; background: var(--bg-blob-1); }
+  .bg-blob.two { width: 24rem; height: 24rem; bottom: 10rem; left: -12rem; background: var(--bg-blob-2); }
+
+  a { color: var(--steel); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { color: var(--amber); }
+  a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 1.4rem 6rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero { text-align: center; padding-bottom: 1.6rem; }
+  .hero .badge-pill {
+    display: inline-block;
+    background: linear-gradient(120deg, var(--amber), var(--steel));
+    color: #fff;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+    font-family: "Hiragino Kaku Gothic ProN", sans-serif;
+  }
+  .hero h1 {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.1rem, 7vw, 3.1rem);
+    letter-spacing: 0.02em;
+    margin: 0.85rem 0 0.5rem;
+    text-wrap: balance;
+  }
+  .hero .tagline { color: var(--ink-soft); font-size: 1rem; margin: 0; }
+  .hero .meta-row {
+    margin-top: 1.2rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.7rem;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+    align-items: center;
+  }
+  .hero .meta-row .dot { opacity: 0.5; }
+
+  .controls { display: flex; gap: 0.6rem; align-items: center; padding: 1.6rem 0 1.8rem; }
+  .controls input[type="search"] {
+    flex: 1;
+    font: inherit;
+    font-size: 0.92rem;
+    padding: 0.75rem 1.1rem;
+    border: 1.5px solid var(--card-border);
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: 0 2px 10px var(--shadow);
+  }
+  .controls input[type="search"]::placeholder { color: var(--ink-soft); }
+  .controls .count { font-size: 0.76rem; color: var(--ink-soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  .month-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 2rem 0 1rem;
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 0.98rem;
+    color: var(--steel);
+  }
+  .month-divider::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--card-border), transparent); }
+
+  .issue {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    box-shadow: 0 6px 22px var(--shadow);
+    padding: 1.3rem 1.4rem;
+    margin-bottom: 1rem;
+  }
+  .issue > summary {
+    list-style: none;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.9rem;
+    align-items: start;
+  }
+  .issue > summary::-webkit-details-marker { display: none; }
+  .issue-badge {
+    background: linear-gradient(135deg, var(--amber), var(--steel));
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    margin-top: 0.1rem;
+  }
+  .issue-headline {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-weight: 700;
+    font-size: 1.12rem;
+    text-wrap: balance;
+  }
+  .issue-sub { display: block; font-family: inherit; font-weight: 400; font-size: 0.85rem; color: var(--ink-soft); margin-top: 0.35rem; }
+  .issue-toggle { font-size: 0.8rem; color: var(--steel); align-self: center; transform: rotate(0deg); transition: transform 0.18s ease; }
+  .issue[open] .issue-toggle { transform: rotate(180deg); }
+  .issue-body { margin-top: 1.5rem; padding-top: 1.3rem; border-top: 1px dashed var(--card-border); }
+
+  .article + .article { margin-top: 2.2rem; padding-top: 2rem; border-top: 1px solid var(--card-border); }
+  .genre-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--steel);
+    background: color-mix(in srgb, var(--steel) 14%, var(--card));
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    margin-bottom: 0.6rem;
+  }
+  .article h3 {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    line-height: 1.55;
+    margin: 0 0 0.9rem;
+    text-wrap: balance;
+  }
+  .glossary {
+    background: color-mix(in srgb, var(--steel) 12%, var(--card));
+    border-left: 4px solid var(--steel);
+    padding: 0.9rem 1.1rem;
+    border-radius: 0 14px 14px 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    margin: 0 0 1.2rem;
+  }
+  .glossary strong { color: var(--ink); }
+  .article h4 { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage); font-weight: 700; margin: 1.35rem 0 0.55rem; }
+  .article p { margin: 0 0 1rem; max-width: 42em; }
+  .answer-box {
+    background: color-mix(in srgb, var(--amber) 12%, var(--card));
+    border: 1.5px dashed color-mix(in srgb, var(--amber) 55%, var(--card-border));
+    border-radius: 14px;
+    padding: 1rem 1.15rem;
+    margin: 0.4rem 0 1rem;
+  }
+  .answer-box p { margin: 0; max-width: none; }
+  .answer-box .answer-label {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--amber);
+    margin-bottom: 0.4rem;
+  }
+  .source-line { margin-top: 1.1rem; font-size: 0.85rem; color: var(--ink-soft); }
+  .empty-state { text-align: center; padding: 2.5rem 0; color: var(--ink-soft); font-size: 0.9rem; }
+
+  footer {
+    margin-top: 2.6rem;
+    padding: 1.6rem;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    text-align: center;
+    line-height: 1.9;
+  }
+
+  .ribbon-wrap { position: fixed; left: 0; top: 50%; transform: translateY(-50%); z-index: 50; display: flex; align-items: center; }
+  .ribbon-tab {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+    font-weight: 700;
+    background: linear-gradient(160deg, var(--amber), var(--steel));
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 1.5rem 0.6rem 1.9rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.16em;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    box-shadow: 3px 4px 16px var(--shadow);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 86%, 0 100%);
+  }
+  .ribbon-panel {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 0 16px 16px 0;
+    box-shadow: 4px 6px 20px var(--shadow);
+    padding: 0.9rem;
+    min-width: 12rem;
+    max-height: 60vh;
+    overflow-y: auto;
+    display: none;
+  }
+  .ribbon-panel.open { display: block; }
+  .ribbon-panel .rp-title { font-size: 0.72rem; letter-spacing: 0.1em; color: var(--ink-soft); text-transform: uppercase; margin: 0 0 0.6rem; }
+  .ribbon-panel a { display: flex; gap: 0.5rem; align-items: baseline; padding: 0.4rem 0.3rem; border-radius: 8px; font-size: 0.85rem; color: var(--ink); text-decoration: none; }
+  .ribbon-panel a:hover { background: color-mix(in srgb, var(--steel) 15%, var(--card)); color: var(--ink); }
+  .ribbon-panel a .rp-badge { font-size: 0.68rem; font-weight: 700; color: var(--amber); white-space: nowrap; }
+  .ribbon-panel .rp-top { display: block; margin-top: 0.5rem; padding-top: 0.6rem; border-top: 1px solid var(--card-border); font-size: 0.8rem; color: var(--steel); font-weight: 700; }
+
+  @media (max-width: 560px) { .ribbon-tab { padding: 1.1rem 0.5rem 1.5rem; font-size: 0.72rem; } }
+  @media (prefers-reduced-motion: reduce) { .issue-toggle { transition: none; } }
+</style>
+</head>
+<body>
+
+<div class="bg-blob one" aria-hidden="true"></div>
+<div class="bg-blob two" aria-hidden="true"></div>
+
+<div class="ribbon-wrap">
+  <button class="ribbon-tab" id="ribbon-btn" aria-expanded="false" aria-controls="ribbon-panel">アーカイブ</button>
+  <nav class="ribbon-panel" id="ribbon-panel">
+    <p class="rp-title">日を選ぶ</p>
+    <div id="ribbon-links"></div>
+    <a href="#top" class="rp-top">▲ トップへ戻る</a>
+  </nav>
+</div>
+
+<div class="wrap" id="top">
+
+  <header class="hero">
+    <span class="badge-pill">DAILY TALK TOPICS</span>
+    <h1>時事おしゃべりネタ帳</h1>
+    <p class="tagline">面接や雑談の「〇〇どう思う？」に答えるための、世間の反応つきニュースまとめ</p>
+    <div class="meta-row">
+      <span id="issue-range">創刊 2026年8月1日</span>
+      <span class="dot">・</span>
+      <span id="issue-count">全25日分</span>
+    </div>
+  </header>
+
+  <div class="controls">
+    <input type="search" id="search" placeholder="🔍 見出し・キーワードで検索（値上げ、AI、炎上…）" />
+    <span class="count" id="result-count"></span>
+  </div>
+
+  <main id="archive">
+<div class="month-divider">2026年8月</div>
+
+    <details class="issue" id="topics-2026-08-25" open data-search="経済・お金 2026年8月は値上げ2,311品目 前年比8割増の 値上げラッシュ  社会・生活  ダークパターン 規制強化へ 消費者庁が特商法改正を検討 テック・AI サム・アルトマン氏 AI開発の 減速 を検討――加速一辺倒だった業界に転換の兆し 仕事・キャリア USJ 着ぐるみ出演者との契約に 違約金50万円 で違法契約の疑い 週刊文春報道  エンタメ・SNS ドラマ VIVANT 続編 2クール連続放送で賛否両論 国際・時事 米カナダ貿易戦争が激化 対カナダ自動車関税を50%に引き上げへ">
+      <summary>
+        <span class="issue-badge">8/25</span>
+        <span>
+          <span class="issue-headline">2026年8月は値上げ2,311品目、前…</span>
+          <span class="issue-sub">2026年8月は値上げ2,311品目、前年比8割増の「値上げラッシュ」／「ダークパターン」規制強化へ、消費者庁が特商法改正を検討／サム・アルトマン氏、AI開発の「減速」を検討――加速一辺倒だった業界に転換の兆し／USJ、着ぐるみ出演者との契約に「違約金50万円」で違法契約の疑い（週刊文春報道）／ドラマ「VIVANT」続編、2クール連続放送で賛否両論／米カナダ貿易戦争が激化、対カナダ自動車関税を50%に引き上げへ　全6件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">経済・お金</span><h3>2026年8月は値上げ2,311品目、前年比8割増の「値上げラッシュ」</h3><h4>何が起きた？</h4><p>帝国データバンクの調査によると、2026年8月の飲食料品の値上げ、なんと<strong>2,311品目</strong>にのぼるんだって。前年同月（1,262品目）から約<strong>8割増</strong>ってかなり急拡大してて、過去2番目に多い水準らしい。値上げ1回あたりの平均値上げ率は月平均約15%。一番多いのはハムやソーセージなどの「加工食品」（1,419品目、前年同月比約7倍）で、次に「調味料」（589品目）、小麦粉・砂糖などの「原材料」（276品目）が続くよ。背景にあるのは中東情勢の悪化による原油・ナフサ高（包装資材や物流コストにも波及）と、国際的な小麦価格の高騰（アメリカの小麦生産量が55年ぶりの低水準になるかもって予測もあるみたい）。製粉大手2社が同じ日に価格改定するなど、小麦粉・パスタ・乾麺・冷凍食品まで対象は結構幅広い。</p><h4>世間の反応</h4><p>「1回の買い物では数十円の違いでも、月・年単位だと家計への影響が大きい」っていう、じわじわ効いてくる負担増への不安を伝える論調が多いみたい。SNS上の個別投稿の集計まではさすがに確認できなかったけど、値上げ関連ニュースって毎月恒例みたいに「またか…」って反応で広く拡散される傾向があるよ。</p><h4>論点</h4><p>賛否っていうより「どう乗り切るか」が関心の中心って感じ。企業側は原材料高・物流費高・人件費上昇を理由に挙げてて、値上げそのものへの反発より「収入が追いついてない」っていう生活実感への不安の方が中心的な論点になってる。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「毎月値上げのニュース見るたびにキリがないなって思います。企業側も原材料高で苦しい事情は分かるんですけど、賃上げのペースが追いついてない実感の方が強いですね」みたいに、値上げの背景に理解を示しつつ、自分の生活実感（賃上げとのギャップ）を絡めて答えると自然だよ。</p></div><p class="source-line">🔗 情報源：<a href="https://news.infoseek.co.jp/article/mynavi_3213381/" target="_blank" rel="noopener">マイナビニュース「2026年8月の飲食料品値上げは2311品目、前年比8割増 -「中東発」値上げラッシュ、ピークはいつ?」</a></p></article>
+<article class="article"><span class="genre-tag">社会・生活</span><h3>「ダークパターン」規制強化へ、消費者庁が特商法改正を検討</h3><div class="glossary"><strong>用語解説：ダークパターンって何？</strong><br />ネット上でわざと分かりにくいデザインや紛らわしい表示を使って、ユーザーを「契約させる」「解約させない」方向に誘導する手口のことだよ。例えば「解約ボタンがどこにあるか分からない」「無料お試しのつもりが自動で有料プランに切り替わる」みたいなやつ。心理的な誘導を悪用してるから問題視されてるんだ。</div><h4>何が起きた？</h4><p>消費者庁が8月24日、有識者会議で「ダークパターン」規制強化に向けた中間取りまとめ案を出したよ。悪質な広告表示や、わざと解約を煩雑にする手口とかが対象。特定商取引法の改正も視野に入れてて、来年の通常国会に関連法案を出すことを目指してるみたい。業界団体「ダークパターン対策協会」は、国内の被害額が最大で年間約<strong>3兆2千億円</strong>にのぼる可能性があるって推計してる。東京工業大学の調査だと、国内で入手できる200アプリのうち<strong>93.5%</strong>に何らかのダークパターンが使われてたっていう結果も出てるんだって。</p><h4>世間の反応</h4><p>「サブスクの解約が異常に分かりにくい」「広告が紛らわしい」みたいな実体験に基づく不満は前から根強くて、規制強化そのものには理解を示す論調が多いみたい。ただ、具体的なX上の反応の集計までは検索で確認できなかったから、そこは正直に「傾向」としてしか書けない。</p><h4>論点</h4><p>消費者保護を強化すべきっていう賛成派と、「違反の線引きが曖昧だと普通のマーケティング施策まで萎縮しちゃうかも」っていう事業者側の慎重論、両方あるよ。政省令やガイドラインでどこまで具体的に事例を示せるかが焦点になりそう。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「解約が分かりにくいサービス、自分も経験あるので規制強化には賛成です。ただ線引きが曖昧だと普通の企業まで萎縮しちゃう気もするので、ガイドラインで具体例をちゃんと示してほしいですね」みたいに、実体験＋バランス感覚を混ぜると答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.itmedia.co.jp/news/article/2608/24/2000000728/" target="_blank" rel="noopener">ITmedia「消費者庁、『ダークパターン』規制へ 特商法改正視野に中間取りまとめ案」</a></p></article>
+<article class="article"><span class="genre-tag">テック・AI</span><h3>サム・アルトマン氏、AI開発の「減速」を検討――加速一辺倒だった業界に転換の兆し</h3><div class="glossary"><strong>用語解説：AI開発の「加速・減速」論争ってそもそも何の話？</strong><br />AI業界ではこれまで「とにかく早く強いAIを作った方が勝ち」っていう加速主義が主流だったんだけど、モデルが強力になりすぎて制御が難しくなるリスクが見えてきて、「ちょっとペースを落として安全対策を優先しよう」っていう慎重派の声が強まってるんだ。開発を進めたい気持ちと、暴走を防ぎたい気持ちの綱引きだと思えばOK。</div><h4>何が起きた？</h4><p>OpenAIのサム・アルトマンCEO、これまでは技術的特異点（AIが人間の知能を超える転換点）の到来を強調してきた人なんだけど、ここにきて姿勢が変わってきてるみたい。2026年7月にはOpenAIやAnthropic、Google DeepMind、Metaなど主要AI企業の従業員<strong>1,378人</strong>が「Pacing the Frontier（フロンティアのペース調整を）」っていう声明に署名したんだって。そのおよそ3週間後の<strong>8月18日</strong>、OpenAIは強化学習の訓練を2週間停止して、最大規模の訓練runも保留を継続するって発表したよ。方針転換のきっかけになったのは、内部テストでAIモデルの「制御喪失」が起きた事案だったみたい。アルトマン氏自身は「減速という言葉は使わないけど、モデルが強力になるにつれてペース調整は必要」ってコメントしてる。</p><h4>世間の反応</h4><p>AI系ニュースを発信してる「チャエン｜デジライズCEO」氏はX（旧Twitter）で「サム・アルトマンが、AI開発の減速についてホワイトハウスと協議していると認めた」って速報し、アルトマン氏の発言を紹介してたよ。これまで「推進派の筆頭」とみなされてたアルトマン氏本人が慎重姿勢を見せたこと自体に「え、あのアルトマンが？」っていう驚きの反応が広がってる感じ。</p><h4>論点</h4><p>「安全のために足元を固めるべき」っていう慎重派と、「競合（特に海外勢）が減速しない中で自分たちだけ止まったら競争に負ける」っていう推進派の綱引きがずっと続いてるテーマだよ。今回は業界大手が足並みを揃えて減速に動いた点が珍しいポイント。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「AIってどんどん便利になってて楽しみな反面、正直ちょっと怖さもあるので、業界トップの人が『一旦落ち着こう』って言い出したのは個人的には安心材料でした。ただ競争に負けたら意味ないっていう意見も分かるので、難しいところですよね」みたいに、期待と不安の両方に触れると答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://news.yahoo.co.jp/articles/40f584d4b9d57da200263dbd68d5458758b9c157" target="_blank" rel="noopener">Yahoo!ニュース（ビジネス＋IT）「サム・アルトマン氏がAI開発減速を検討──安全懸念が背景」</a></p></article>
+<article class="article"><span class="genre-tag">仕事・キャリア</span><h3>USJ、着ぐるみ出演者との契約に「違約金50万円」で違法契約の疑い（週刊文春報道）</h3><div class="glossary"><strong>用語解説：業務委託契約と「労働者性」の違いって？</strong><br />「業務委託」は会社と対等な立場で仕事を発注・受注する契約で、労働基準法などの労働者向けの保護（最低賃金、解雇規制、有給休暇とか）が基本的に及ばないんだ。でも実際には会社の指揮命令下でガッツリ働かされてて、実態が雇用に近い「労働者」だと判断されるケースもあって、そういう場合は業務委託の看板だけで労働者保護を回避してるんじゃないかって問題になるよ。</div><h4>何が起きた？</h4><p>週刊文春の取材で、ユニバーサル・スタジオ・ジャパン（USJ）がショーやパレードでキャラクターに扮する“中の人”出演者と結んでる業務委託契約に、一方的に契約を終了する場合は違約罰として<strong>50万円</strong>の賠償金を払わなきゃいけない条項が入ってることが分かったんだって。月収20万円台の出演者も少なくない中で、この違約金の高さから「辞めたくても辞められない」っていう出演者の告発が報じられてるよ。取材に応じた特定社会保険労務士は、一方的に高額な違約金を課す運用は「極めて悪質」だって指摘してる。開業25周年っていう節目のタイミングでの報道ってのも話題性を高めてる感じ。</p><h4>世間の反応</h4><p>報道直後で、X・ヤフコメ上の具体的な反応の集計までは検索では確認できなかったよ。ただ「人気テーマパークの裏側」「業務委託っていう形式で労働者保護を実質回避してるんじゃないか」っていう切り口は、過去の同じような告発報道と同様、大きな関心を集めやすいテーマではあるよ。</p><h4>論点</h4><p>業務委託契約っていう形式でも、実態として労働者に近い働き方をさせてる場合に、普通の雇用契約なら認められないような高額な違約金条項が許されるのかっていう「フリーランス・業務委託の保護」の論点だよ。最近強化が進んでる「フリーランス新法」的な問題意識とも重なる、働き方を巡る象徴的な事例って感じ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「テーマパークの華やかなイメージとのギャップに驚きました。業務委託だからって労働者としての保護が及ばないのはおかしいと思うので、フリーランス新法とかで実態に応じた保護がもっと広がってほしいですね」みたいに、驚き＋制度への意見をセットで話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://bunshun.jp/articles/-/91423" target="_blank" rel="noopener">文春オンライン「《50万円の賠償金が…》開業25周年のUSJに違法契約の疑い【契約書入手】」</a></p></article>
+<article class="article"><span class="genre-tag">エンタメ・SNS</span><h3>ドラマ「VIVANT」続編、2クール連続放送で賛否両論</h3><h4>何が起きた？</h4><p>2023年に社会現象になった堺雅人主演ドラマ「VIVANT」の続編、2026年7月から異例の2クール連続放送でスタートしてるよ。8月23日には通算15話が放送されたばかり。堺雅人、阿部寛、二階堂ふみらの主要キャストが再集結してて、前作ラストの直後から物語が始まる構成になってる。</p><h4>世間の反応</h4><p>評価は結構割れてて、視聴者投票だと「面白い」がやや優勢らしいんだけど、明確に賛否が分かれてるみたい。好意的な意見は、予測不能な展開、映像のクオリティ、キャスト陣の演技力を評価する声。特に第13話の乃木を巡る衝撃展開で評価が上向いたって声もあるよ。逆に否定的な意見だと、セリフ・説明過多で情報量が多くてテンポが悪い、組織や人物関係が複雑で「ついていけない」、前作にあった序盤からの砂漠のカーチェイスみたいなアクション性が薄くて「地味」に感じる、みたいな指摘が出てる。</p><h4>論点</h4><p>前作が「テンポの良いエンタメ性」で社会現象化した反動で、続編の「じっくり考えさせる路線」への評価が分かれてる構図だよ。続編・シリーズものにありがちな「初代と比べてどうか」っていう定番の議論でもあるよね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「前作のスピード感が好きだったので続編は少しじっくりめに感じましたけど、乃木の展開とか映像のクオリティは相変わらずすごいなと思います」みたいに、前作との比較＋良かった点を具体的に挙げると、ちゃんと見てる感が出て答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://news.yahoo.co.jp/articles/1f1840921604d9f2c64430a3ef0f567cdbb7c380" target="_blank" rel="noopener">Yahoo!ニュース（ウォーカープラス）「『VIVANT』続編、7月から異例の2クール連続放送！堺雅人『まだ全然謎が終わっていなかった』前作無料配信もスタート」</a></p></article>
+<article class="article"><span class="genre-tag">国際・時事</span><h3>米カナダ貿易戦争が激化、対カナダ自動車関税を50%に引き上げへ</h3><div class="glossary"><strong>用語解説：報復関税ってどういう仕組み？</strong><br />ある国が輸入品に関税（税金）をかけて自国産業を守ろうとすると、相手国も「じゃあこっちも」って同じくらいの規模で関税をかけ返すことがあって、これを報復関税っていうよ。やり合いがエスカレートすると、最終的には両方の国の消費者や企業がコスト増を被ることになりやすいんだ。</div><h4>何が起きた？</h4><p>アメリカとカナダの貿易交渉が決裂して、対立がどんどん激しくなってるよ。カナダのカーニー首相は8月21日、アメリカとの交渉停止と交渉団の帰国を発表したんだって。アメリカは約280億カナダドル（約3.2兆円）相当のカナダ製品に50%の追加関税を発動、カナダも9月8日から同じくらいの規模の報復関税（鉄鋼・電子機器などが対象）を導入する方針みたい。さらにトランプ米大統領は8月24日、2027年1月からカナダ製の自動車・自動車部品への輸入関税を<strong>50%</strong>に引き上げるって表明したよ。カナダに生産拠点を持つ日本の自動車メーカーも、生産体制の見直しとか影響を受ける可能性があるんだって。カーニー政権は、米中間選挙前の交渉再開はちょっと難しいとみてて、トランプ政権の残り任期を乗り切る長期戦を想定してるみたい。</p><h4>世間の反応</h4><p>経済・国際報道の枠組みでの関心が中心で、SNS上で一般的な「賛否」が盛り上がってるっていうより、自動車業界やサプライチェーンへの影響を心配する論調が目立つ感じ。日本国内では「対岸の火事じゃなくて、日系メーカーの生産計画にも波及しうる話」って受け止められてるよ。</p><h4>論点</h4><p>保護主義的な関税政策の応酬が長期化すると、最終的なコスト負担が消費者や下請け企業に転嫁されるんじゃないかっていう懸念があるよ。自由貿易を重視する立場と、自国産業を優先して守りたい立場の対立が根っこにあるから、政治的にセンシティブなテーマでもある。ここでは特定の立場に肩入れせず、状況整理にとどめておくね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「関税の応酬って最終的に消費者にコストが跳ね返ってくることが多いので、正直あまり良い流れではないなと思います。ただ自国の産業を守りたいっていう気持ちも分からなくはないので、どこかで落としどころを見つけてほしいですね」みたいに、懸念＋相手の事情への理解を両方示すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://topics.smt.docomo.ne.jp/article/mainichi/business/mainichi-20260825k0000m020009000c" target="_blank" rel="noopener">毎日新聞（dメニューニュース）「米、対カナダ自動車関税を50％に引き上げ表明 日本勢に影響も」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-24" data-search="エンタメ・SNS 将棋・白玲戦で西山朋佳女流四冠が先勝 女性初の棋士誕生なるか 経済・お金 金融庁 保険モニタリングレポート  生保各社の内部管理態勢に課題を指摘 社会・生活 熊本地震 8月末の断水解消目標に向けて最終盤の復旧作業">
+      <summary>
+        <span class="issue-badge">8/24</span>
+        <span>
+          <span class="issue-headline">将棋・白玲戦で西山朋佳女流四冠が先勝、女…</span>
+          <span class="issue-sub">将棋・白玲戦で西山朋佳女流四冠が先勝、女性初の棋士誕生なるか／金融庁「保険モニタリングレポート」、生保各社の内部管理態勢に課題を指摘／熊本地震、8月末の断水解消目標に向けて最終盤の復旧作業　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">エンタメ・SNS</span><h3>将棋・白玲戦で西山朋佳女流四冠が先勝、女性初の棋士誕生なるか</h3><div class="glossary"><strong>用語解説：「棋士」と「女流棋士」の違いって？</strong><br />将棋の世界には、男女関係なく戦うプロ棋士の「棋士」と、女性だけの棋戦で活動する「女流棋士」という、別の資格制度があるんだ。女流棋士が正式な「棋士」になるにはプロ編入試験に合格する必要があって、これまで女性の合格者はいない狭き門。だから女流棋士のタイトル戦での活躍が、いつも「女性初の棋士誕生なるか」っていう文脈で注目されるんだよ。</div><h4>何が起きた？</h4><p>将棋の女流タイトル戦「白玲戦」で、西山朋佳女流四冠が先勝したよ。女性初の棋士（プロ編入）を目指す動きとしても注目されてる西山さんの活躍で、将棋ファン以外からも関心が集まってるニュースだね。</p><h4>世間の反応</h4><p>西山さんの活躍を応援する声がSNSでも広がってるテーマだよ。将棋界における女性の活躍として、大きな注目を集めてるみたい。</p><h4>論点</h4><p>特に対立する論点はない、素直に応援されてるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「西山さんの活躍、将棋に詳しくなくても応援したくなりますね。女性初の棋士が誕生する日が来るといいなと思います」みたいに、応援の気持ちを素直に話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://japan.co.jp/news-2026-08-24.html" target="_blank" rel="noopener">Japan.co.jp「関東4都県で震度5弱、台風18号が沖縄へ、アンリ・リヴィエール――2026年8月24日の日本」</a></p></article>
+<article class="article"><span class="genre-tag">経済・お金</span><h3>金融庁「保険モニタリングレポート」、生保各社の内部管理態勢に課題を指摘</h3><div class="glossary"><strong>用語解説：内部管理態勢って何？</strong><br />会社の中で、社員が不正やミスをしないようにチェックする仕組み全体のことだよ。「けん制機能」とも呼ばれる。営業社員一人ひとりの善意に頼るんじゃなくて、組織として二重三重にチェックできる体制を作れているかどうかがポイントなんだ。</div><h4>何が起きた？</h4><p>金融庁が8月6日に公表した「2026年保険モニタリングレポート」で、一部の生命保険会社の営業社員による金銭詐取問題を念頭に、「内部管理態勢やけん制機能の強化が重要な課題」だっていう認識を示したよ。生保業界全体に向けて、行政としての課題認識を改めて共有する形になったニュースで、その後も業界内での対応が注目され続けてるみたい。</p><h4>世間の反応</h4><p>「お客さんの大事なお金を扱う業界なのに」っていう厳しい視線が向けられてるテーマだよ。個別の営業社員への批判よりも、組織としてチェック体制を整えられてなかったことへの指摘が中心になってるみたい。</p><h4>論点</h4><p>個人の不正を個人の問題として片付けるのではなく、組織としてどう防止する仕組みを作るかっていう、ガバナンスの論点として受け止められてるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「保険とか金融って、信頼が命の業界だと思うので、こういう問題が出るとやっぱり心配になりますね。個人の問題で終わらせずに、組織としてしっかり再発防止してほしいなと思います」みたいに、構造的な視点で答えると答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.nikkinonline.com/article/413526" target="_blank" rel="noopener">ニッキンONLINE「プルデンシャル不祥事『必要な対策を精査』 金融庁、保険レポート」</a></p></article>
+<article class="article"><span class="genre-tag">社会・生活</span><h3>熊本地震、8月末の断水解消目標に向けて最終盤の復旧作業</h3><h4>何が起きた？</h4><p>7月28日発生の熊本地震、いよいよ8月末という目標の期限が近づいてきてるよ。断水戸数はかなり減ってきてるものの、最後まで気を抜けない最終盤の復旧作業が続いてる状況。約1か月にわたる被災地の生活再建の取り組みが、大きな節目を迎えようとしてるタイミングだね。</p><h4>世間の反応</h4><p>「もう少しで目標達成」っていう期待の声と、「最後の一軒まで気を抜かないでほしい」っていう声、両方が見られるテーマだよ。</p><h4>論点</h4><p>特に対立する論点はない、復旧の進捗を最後まで見守るテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「地震から1か月近く経って、いよいよ目標の月末が近づいてきましたね。最後まで無事に復旧が進んでほしいなと思います」みたいに、経過を見守る気持ちを話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.mlit.go.jp/saigai/saigai_260728.html" target="_blank" rel="noopener">国土交通省「令和８年熊本地震における被害と対応について」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-23" data-search="社会・生活 茨城県南部でM5.9の地震 関東4都県で震度5弱 社会・生活 台風18号が沖縄へ接近 25〜26日に暴風高波の厳重警戒 仕事・キャリア お盆明けで中途採用の動きが本格化">
+      <summary>
+        <span class="issue-badge">8/23</span>
+        <span>
+          <span class="issue-headline">茨城県南部でM5.9の地震、関東4都県で…</span>
+          <span class="issue-sub">茨城県南部でM5.9の地震、関東4都県で震度5弱／台風18号が沖縄へ接近、25〜26日に暴風高波の厳重警戒／お盆明けで中途採用の動きが本格化　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">社会・生活</span><h3>茨城県南部でM5.9の地震、関東4都県で震度5弱</h3><h4>何が起きた？</h4><p>今日8月23日午前2時、茨城県南部を震源とする<strong>マグニチュード5.9</strong>の地震が発生したよ。関東4都県17市区町村で震度5弱を観測して、負傷者は4都県で計<strong>22人</strong>にのぼったんだって。夜間の発生ということもあって、多くの人が驚いて目を覚ました地震だったみたい。</p><h4>世間の反応</h4><p>夜中の強い揺れに驚いた人の投稿がSNSで広がったよ。熊本地震の復旧がまだ続いてる時期だけに、「日本のどこでも地震はいつ起きてもおかしくない」っていう防災意識の高まりにつながってる面もあるみたい。</p><h4>論点</h4><p>特に対立する論点はない、防災意識を高めるきっかけとして受け止められてるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「夜中の地震、びっくりしましたよね。熊本地震のニュースも続いてる中だったので、改めて自分の家の備蓄とか確認しないとなと思いました」みたいに、驚き＋防災意識を話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://japan.co.jp/news-2026-08-24.html" target="_blank" rel="noopener">Japan.co.jp「関東4都県で震度5弱、台風18号が沖縄へ、アンリ・リヴィエール――2026年8月24日の日本」</a></p></article>
+<article class="article"><span class="genre-tag">社会・生活</span><h3>台風18号が沖縄へ接近、25〜26日に暴風高波の厳重警戒</h3><h4>何が起きた？</h4><p>台風18号が発生して、8月25〜26日ごろに沖縄本島付近へ接近する見込みだよ。気象庁から暴風・高波への厳重警戒が呼びかけられてる状況。8月は台風の発生ペースが例年より速く、日本近海で複数の台風が同時に発生する「クアドラプル台風」状態になった時期もあったくらい、台風の当たり年になってるみたい。</p><h4>世間の反応</h4><p>沖縄地方を中心に、台風への備えを呼びかける声が広がってるテーマだよ。「今年は台風多いな」っていう実感を持つ人も多いみたい。</p><h4>論点</h4><p>特に対立する論点はない、防災情報として受け止められてるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「今年は台風の当たり年って感じですよね。沖縄の方々、しっかり備えて安全に過ごしてほしいなと思います」みたいに、心配＋防災への意識を話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://japan.co.jp/news-2026-08-24.html" target="_blank" rel="noopener">Japan.co.jp「関東4都県で震度5弱、台風18号が沖縄へ、アンリ・リヴィエール――2026年8月24日の日本」</a></p></article>
+<article class="article"><span class="genre-tag">仕事・キャリア</span><h3>お盆明けで中途採用の動きが本格化</h3><h4>何が起きた？</h4><p>お盆休みが明けて、企業の中途採用活動が本格的に動き出す時期になったよ。8月はお盆休暇を挟んで一時的に活動が落ち着いてたけど、9月以降の採用活動を見据えて、求人内容の見直しや採用計画の再設計を進めてた企業が、いよいよ具体的な募集を再開してくるタイミングだね。</p><h4>世間の反応</h4><p>転職を考えてる人にとっては「そろそろ本格的に動こうかな」っていうタイミングとして意識されやすい時期だよ。</p><h4>論点</h4><p>特に対立する論点はない、季節的な転職市場の動きとして受け止められてるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「お盆明けって転職活動再開のタイミングとしてよく聞きますね。自分も情報収集だけでもしておこうかなと思ってます」みたいに、実体験や関心を交えて話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://umai-jinji.jp/column/market-202608/" target="_blank" rel="noopener">ウマい人事「2026年8月求人市場動向」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-22" data-search="国際・時事 カナダ 200億ドル規模の対米報復関税を発表 エンタメ・SNS 夏の甲子園 智弁和歌山が5年ぶり優勝で大会閉幕 経済・お金 米の店頭価格 2週間ぶりに3,200円を割り込む">
+      <summary>
+        <span class="issue-badge">8/22</span>
+        <span>
+          <span class="issue-headline">カナダ、200億ドル規模の対米報復関税を…</span>
+          <span class="issue-sub">カナダ、200億ドル規模の対米報復関税を発表／夏の甲子園、智弁和歌山が5年ぶり優勝で大会閉幕／米の店頭価格、2週間ぶりに3,200円を割り込む　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">国際・時事</span><h3>カナダ、200億ドル規模の対米報復関税を発表</h3><h4>何が起きた？</h4><p>カナダが、アメリカの追加関税に対抗する形で、約<strong>200億ドル</strong>規模の報復関税を発表したよ。鉄鋼や電子機器などが対象みたい。8月21日のカーニー首相による交渉停止発表から、わずか1日で具体的な報復措置の発表に踏み切った形で、米加間の貿易摩擦がいよいよエスカレートしてる状況だね。</p><h4>世間の反応</h4><p>事態の急速な悪化に驚く声が中心。「あっという間に報復関税まで来た」っていう受け止めが広がってるみたい。</p><h4>論点</h4><p>保護主義的な政策の応酬をどう評価するかは、政治的にセンシティブなテーマ。ここでは特定の立場に肩入れせず、状況の推移の整理にとどめておくね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「交渉停止から報復関税まで、本当にあっという間でしたね。エスカレートする前に、どこかで話し合いの糸口が見つかるといいなと思います」みたいに、驚き＋収束への願いを話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.bloomberg.com/jp/news/articles/2026-08-22/TK6GBQKJH6V400" target="_blank" rel="noopener">Bloomberg「カナダ、200億ドル規模の対米報復関税を発表-鉄鋼や電子機器など」</a></p></article>
+<article class="article"><span class="genre-tag">エンタメ・SNS</span><h3>夏の甲子園、智弁和歌山が5年ぶり優勝で大会閉幕</h3><h4>何が起きた？</h4><p>8月5日に開幕した第108回全国高等学校野球選手権大会（夏の甲子園）、今日8月22日、智弁和歌山の優勝で閉幕したよ。準決勝で優勝候補の横浜を破った勢いそのままに、決勝も制して5年ぶりの夏の頂点に立った形。DH制が史上初めて導入された記念すべき大会が、こうして幕を閉じたよ。</p><h4>世間の反応</h4><p>智弁和歌山の優勝を称える声がSNSでも広がったよ。今大会は「DH制導入」という新しい試みも含めて、話題の多かった大会として振り返られてるみたい。</p><h4>論点</h4><p>特に対立する論点はない、夏の風物詩の締めくくりとして素直に祝われてるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「智弁和歌山、準決勝の勢いそのままに優勝しましたね。DH制っていう新しい試みもあった大会だったので、来年以降どう定着していくのかも楽しみです」みたいに、優勝への称賛＋今後への関心を話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.olympics.com/ja/news/japan-high-school-baseball-summer-koshien-2026-live-results-list" target="_blank" rel="noopener">Olympics.com「全国高校野球・夏の甲子園2026丨結果速報・成績一覧」</a></p></article>
+<article class="article"><span class="genre-tag">経済・お金</span><h3>米の店頭価格、2週間ぶりに3,200円を割り込む</h3><h4>何が起きた？</h4><p>米の小売価格が、2週間ぶりに5kgあたり<strong>3,200円</strong>を割り込んだよ。農水省発表の卸売（相対取引）価格は上昇してたのに、店頭価格はむしろ下落傾向っていう、ちょっとねじれた動きが続いてる状況。9月からの新米シーズンに向けて、価格がさらにどう動くか注目されてるみたい。</p><h4>世間の反応</h4><p>「値段が下がるのは素直にありがたい」っていう歓迎の声がある一方、「新米が出たらまた上がるんじゃないか」っていう先読みの声もあるテーマだよ。</p><h4>論点</h4><p>米価の動向は、生産者の収益性（農家の生活）と消費者の家計負担、両方の視点があるテーマだよ。単純に「安ければいい」とは言い切れない難しさがあるポイント。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「お米が少し安くなったのは嬉しいんですけど、農家さんの収入も気になるので、単純に安ければいいとも言えないなと思います」みたいに、消費者目線＋生産者目線の両方に触れると答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://smartagri-jp.com/agriculture/14968" target="_blank" rel="noopener">SMART AGRI「【2026年8〜9月米価情報】『相対取引価格』は上昇も、店頭価格は下落か……9月の新米登場でどう変わる？」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-21" data-search="国際・時事 カナダのカーニー首相 対米貿易交渉の停止を発表 社会・生活 熊本地震 断水が大幅に減少 復旧作業が最終盤に 経済・お金 9月にはさらに値上げが拡大 3,029品目の見通し">
+      <summary>
+        <span class="issue-badge">8/21</span>
+        <span>
+          <span class="issue-headline">カナダのカーニー首相、対米貿易交渉の停止…</span>
+          <span class="issue-sub">カナダのカーニー首相、対米貿易交渉の停止を発表／熊本地震、断水が大幅に減少。復旧作業が最終盤に／9月にはさらに値上げが拡大、3,029品目の見通し　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">国際・時事</span><h3>カナダのカーニー首相、対米貿易交渉の停止を発表</h3><h4>何が起きた？</h4><p>カナダのマーク・カーニー首相が今日8月21日、アメリカとの貿易交渉を停止し、交渉団に帰国を命じたと発表したよ。米加間の貿易摩擦がいよいよ本格的な対立局面に入ったサインで、この後の関税を巡る応酬（アメリカの追加関税発動、カナダの報復関税）につながっていく、大きな節目の日になったニュースだよ。</p><h4>世間の反応</h4><p>米加関係の悪化に驚く声が中心。「同盟国同士でもここまでこじれるのか」っていう受け止めが広がってるみたい。</p><h4>論点</h4><p>保護主義的な通商政策への評価は国際経済を巡る政治的なテーマだから、ここでは特定の立場に肩入れせず、状況の推移を整理する形にとどめておくね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「アメリカとカナダって仲がいいイメージだったので、交渉停止って聞くと結構びっくりしますね。この後どうなっていくのか気になります」みたいに、率直な驚きを話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.bloomberg.com/jp/news/articles/2026-08-24/TK8YQ9T9NJLT00" target="_blank" rel="noopener">Bloomberg「カナダ、米国との貿易交渉再開は困難か－中間選挙後も対立継続、長期化の可能性見込む」</a></p></article>
+<article class="article"><span class="genre-tag">社会・生活</span><h3>熊本地震、断水が大幅に減少。復旧作業が最終盤に</h3><h4>何が起きた？</h4><p>7月28日の熊本地震から3週間以上が経って、断水戸数は大幅に減ってきてるよ。8月末をめどにした県内全域での断水解消という目標に向けて、復旧作業がいよいよ最終盤に入ってる状況みたい。避難所で生活する人の数も、ピーク時と比べてかなり減ってきてるみたい。</p><h4>世間の反応</h4><p>着実に進む復旧に安堵する声がある一方、「最後まで気を抜かずに支援を続けてほしい」っていう声も見られるテーマだよ。</p><h4>論点</h4><p>特に対立する論点はない、復旧の進捗を見守るテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「もう少しで断水も解消しそうだと聞いて安心しました。最後の一軒まで、しっかり復旧が進んでほしいなと思います」みたいに、安心＋願いを話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.mlit.go.jp/saigai/saigai_260728.html" target="_blank" rel="noopener">国土交通省「令和８年熊本地震における被害と対応について」</a></p></article>
+<article class="article"><span class="genre-tag">経済・お金</span><h3>9月にはさらに値上げが拡大、3,029品目の見通し</h3><h4>何が起きた？</h4><p>8月の値上げラッシュが続く中、9月にはさらに値上げが拡大する見通しが出てきてるよ。帝国データバンクの調査では、9月の値上げ品目数は<strong>3,029品目</strong>にのぼる見通しなんだって。8月の水準からさらに増える計算で、値上げの波が秋にかけても続くことが見えてきてる状況だよ。</p><h4>世間の反応</h4><p>「まだ増えるのか」っていう、値上げ疲れがさらに深まる反応が広がりそうなテーマだよ。</p><h4>論点</h4><p>値上げが続く構造的な背景（原材料高、円安、物流費高）への理解と、家計の負担感のバランスが、繰り返し議論される論点だよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「9月にさらに値上げが増えるって聞くと、正直ため息が出ますね。ただ企業側の事情も分かるので、賃上げも同じペースで進んでほしいなと改めて思います」みたいに、率直な感想＋願いを話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://plastic-pallet.co.jp/price-hike-list-2026-august/" target="_blank" rel="noopener">プラスチックパレット株式会社「2026年8月から値上がりするもの一覧、食品2,311品目・紙製品15％以上と9月4,531品目」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-20" data-search="経済・お金 円安基調続く 日銀の10月利上げ観測が強まる 社会・生活 千葉の大雨 死者10人・浸水1,500棟超に エンタメ・SNS 夏の甲子園 決勝進出校が出そろい大会もいよいよ大詰め">
+      <summary>
+        <span class="issue-badge">8/20</span>
+        <span>
+          <span class="issue-headline">円安基調続く、日銀の10月利上げ観測が強…</span>
+          <span class="issue-sub">円安基調続く、日銀の10月利上げ観測が強まる／千葉の大雨、死者10人・浸水1,500棟超に／夏の甲子園、決勝進出校が出そろい大会もいよいよ大詰め　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">経済・お金</span><h3>円安基調続く、日銀の10月利上げ観測が強まる</h3><h4>何が起きた？</h4><p>円安基調が続いてて、日銀が10月に利上げに踏み切るんじゃないかっていう観測が強まってきてるよ。7月末に政策金利を1.0%に据え置いたばかりだけど、円安による輸入物価の上昇（＝値上げラッシュの一因）を受けて、追加利上げへの思惑が市場で高まってる状況みたい。</p><h4>世間の反応</h4><p>円安による生活コスト増への不満の声がある一方、利上げによる住宅ローン負担増を心配する声もあって、単純に「利上げすればいい」とはいかない複雑さがあるテーマだよ。</p><h4>論点</h4><p>円安是正のための利上げを支持する声（物価対策として）と、住宅ローンなど借入コストへの影響を懸念する声の対立は、8月を通じて繰り返し話題になってるポイントだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「10月利上げの観測、気になりますね。円安で物価が上がるのは困るけど、ローン抱えてる人からするとまた別の負担になるので、どっちがいいとは簡単に言えないなと思います」みたいに、両方の立場への理解を示すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.gaitame.com/media/entry/2026/08/20/180200" target="_blank" rel="noopener">外為どっとコム マネ育チャンネル「【2026年ドル円見通し】日銀9月に利上げか？それでも円安が止まらない3つの理由」</a></p></article>
+<article class="article"><span class="genre-tag">社会・生活</span><h3>千葉の大雨、死者10人・浸水1,500棟超に</h3><h4>何が起きた？</h4><p>千葉県の大雨被害、死者が<strong>10人</strong>に達して、浸水被害も<strong>1,500棟</strong>を超えたことが分かったよ。お盆のUターンラッシュの時期とも重なった大雨で、被害の全容が明らかになるにつれて深刻さが増してる状況。</p><h4>世間の反応</h4><p>被害の規模の大きさに、心を痛める声が広がってるテーマだよ。犠牲になった方々への哀悼と、被災地への支援を求める声が中心。</p><h4>論点</h4><p>特に対立する論点はない、被災地支援の必要性について広く共感が集まってるテーマだよ。強いて言えば、「毎年のように大雨被害が起きる中で、防災インフラの整備をどう進めるか」っていう構造的な課題への関心はあるかもね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「亡くなった方が10人もいらっしゃると聞いて、本当に胸が痛みます。被災された方々の一日も早い生活再建を願うばかりです」みたいに、素直な哀悼の気持ちで答えるのが自然なテーマだよ。</p></div><p class="source-line">🔗 情報源：<a href="https://japan.co.jp/news-2026-08-24.html" target="_blank" rel="noopener">Japan.co.jp「関東4都県で震度5弱、台風18号が沖縄へ、アンリ・リヴィエール――2026年8月24日の日本」</a></p></article>
+<article class="article"><span class="genre-tag">エンタメ・SNS</span><h3>夏の甲子園、決勝進出校が出そろい大会もいよいよ大詰め</h3><h4>何が起きた？</h4><p>夏の甲子園、準決勝で5年ぶりの決勝進出を決めた智弁和歌山をはじめ、決勝に進む2校が出そろって、大会もいよいよ大詰めを迎えてるよ。DH制初導入という新しい試みも含めて、話題の多かった今大会の締めくくりに注目が集まってる時期だね。</p><h4>世間の反応</h4><p>「あっという間に決勝まで来たな」っていう、夏の終わりを感じさせる時期特有の感慨深さを感じる人が多いテーマだよ。</p><h4>論点</h4><p>特に対立する論点はない、夏の風物詩の締めくくりとして楽しまれてるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「決勝カードが決まって、いよいよ夏も終盤って感じですね。最後まで見届けたいなと思います」みたいに、季節感を交えて話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://dir.sp.baseball.findfriends.jp/yakyumatome/detail.html?no=8737" target="_blank" rel="noopener">週刊ベースボールONLINE「【夏の甲子園2026】注目選手・出場校・見どころ・試合日程・結果一覧」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-19" data-search="エンタメ・SNS 夏の甲子園 智弁和歌山が横浜に逆転勝ちで5年ぶり決勝進出 経済・お金 米価 農水省発表で相対取引価格が上昇 店頭価格は下落傾向 社会・生活 千葉の大雨 被害状況の把握が進む">
+      <summary>
+        <span class="issue-badge">8/19</span>
+        <span>
+          <span class="issue-headline">夏の甲子園、智弁和歌山が横浜に逆転勝ちで…</span>
+          <span class="issue-sub">夏の甲子園、智弁和歌山が横浜に逆転勝ちで5年ぶり決勝進出／米価、農水省発表で相対取引価格が上昇。店頭価格は下落傾向／千葉の大雨、被害状況の把握が進む　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">エンタメ・SNS</span><h3>夏の甲子園、智弁和歌山が横浜に逆転勝ちで5年ぶり決勝進出</h3><h4>何が起きた？</h4><p>夏の甲子園の準決勝で、智弁和歌山が優勝候補の横浜に逆転勝ちして、5年ぶりの決勝進出を決めたよ。横浜のエース織田翔希投手が試合の途中で降板するという、大会屈指の好投手が絡む展開もあって、大きな注目を集めた一戦だったみたい。</p><h4>世間の反応</h4><p>優勝候補と目されてた横浜が敗れたことに「まさかの結果」っていう驚きの声がSNSでも広がったよ。一方で、5年ぶりの決勝進出を決めた智弁和歌山への称賛の声も多いみたい。</p><h4>論点</h4><p>特に対立する論点はない、素直に高校野球の名勝負として楽しまれてるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「横浜が負けるとは正直思ってなかったのでびっくりしました。エースが途中で降板する展開も含めて、本当に高校野球らしいドラマだったなと思います」みたいに、驚き＋高校野球への愛着を話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://news.web.nhk/newsweb/na/nd-20260819de45038" target="_blank" rel="noopener">NHKニュース「高校野球 夏の甲子園 準決勝 智弁和歌山が5年ぶり決勝へ 横浜に逆転勝ち 織田翔希投手は途中降板【詳しく】」</a></p></article>
+<article class="article"><span class="genre-tag">経済・お金</span><h3>米価、農水省発表で相対取引価格が上昇。店頭価格は下落傾向</h3><div class="glossary"><strong>用語解説：「相対取引価格」と「店頭価格」の違いって？</strong><br />相対取引価格は、農家やJAが卸売業者に直接お米を売るときの価格のこと。店頭価格は、実際にスーパーとかで消費者が買うときの価格だよ。この2つは必ずしも同じ方向に動くとは限らなくて、卸売の値段が上がってるのにお店の値段は下がってる、みたいなちぐはぐな状況が起きることもあるんだ。</div><h4>何が起きた？</h4><p>農林水産省が発表した2025年産米の7月の相対取引価格は、全銘柄平均で玄米60kgあたり<strong>3万2,486円</strong>。6月から1,181円、4%上昇したんだって。一方でスーパーの店頭価格（8月3〜9日の平均）は5kgあたり3,220円で、前年同期より13.8%安く、2月上旬と比べても約1,000円下がってるみたい。卸売と店頭で逆方向の動きが見られる、ちょっと不思議な状況だよ。</p><h4>世間の反応</h4><p>「結局お米の値段ってどうなってるの？」っていう戸惑いの声が多いテーマだよ。「令和の米騒動」からの価格変動に敏感になってる人が多いみたい。</p><h4>論点</h4><p>卸売価格の上昇が今後店頭価格にも波及するのか、それとも新米シーズンで店頭価格がさらに下がるのか、見方が分かれてるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「お米の値段、上がってるのか下がってるのか正直よく分からなくなってきました（笑）。新米が出る9月以降どうなるか、気にしてチェックしたいですね」みたいに、率直な戸惑いを話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://smartagri-jp.com/agriculture/14968" target="_blank" rel="noopener">SMART AGRI「【2026年8〜9月米価情報】『相対取引価格』は上昇も、店頭価格は下落か……9月の新米登場でどう変わる？」</a></p></article>
+<article class="article"><span class="genre-tag">社会・生活</span><h3>千葉の大雨、被害状況の把握が進む</h3><h4>何が起きた？</h4><p>千葉県での大雨について、被害状況の把握が進んできてるよ。住宅への浸水被害や、避難生活を送る住民の状況が徐々に明らかになってきてる段階みたい。夏の大雨・線状降水帯のリスクが年々話題になる中、また一つ実際の被害事例が積み重なった形だね。</p><h4>世間の反応</h4><p>被災地域への心配の声が広がってるテーマだよ。近年、夏の大雨被害が毎年のように起きてることへの「気候変動の影響では」っていう指摘も見られるみたい。</p><h4>論点</h4><p>気候変動と大雨被害の関連づけについては、専門家の間でも慎重な議論が必要なテーマ。ここでは被災地への支援・防災意識の大切さという切り口にとどめておくね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「毎年のように大雨のニュースを見ると、本当に他人事じゃないなと思います。自分の住んでる地域のハザードマップとか、改めて確認しておこうと思いました」みたいに、自分ごと化を話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.jiji.com/jc/archives?g=soc_archive_0" target="_blank" rel="noopener">時事ドットコム「社会記事一覧（2026年8月）」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-18" data-search="経済・お金 AI需要けん引で半導体関連株 最高値更新の動き続く 社会・生活 熊本地震 断水解消が着実に進む 月末の全域解消目標に向けて 国際・時事 中東情勢 依然として緊迫続く">
+      <summary>
+        <span class="issue-badge">8/18</span>
+        <span>
+          <span class="issue-headline">AI需要けん引で半導体関連株、最高値更新…</span>
+          <span class="issue-sub">AI需要けん引で半導体関連株、最高値更新の動き続く／熊本地震、断水解消が着実に進む。月末の全域解消目標に向けて／中東情勢、依然として緊迫続く　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">経済・お金</span><h3>AI需要けん引で半導体関連株、最高値更新の動き続く</h3><h4>何が起きた？</h4><p>8月の東京株式市場、AI需要拡大への期待を背景にした半導体関連株の上昇が続いてて、最高値を更新する銘柄も出てきてるよ。東京エレクトロンやアドバンテストみたいな主力銘柄に資金が流入し続けてる状況。NVIDIAの大型データセンター投資計画（PORTS-Pikeなど）といった海外のAI投資ニュースも、日本の関連株への追い風になってるみたい。</p><h4>世間の反応</h4><p>株高そのものを歓迎する投資家目線の声がある一方、「AIバブルなのでは」っていう慎重論も根強いテーマだよ。実体経済（給料）への波及がまだ実感しにくいっていう声も引き続き聞かれるみたい。</p><h4>論点</h4><p>AI関連投資の過熱を「バブル」と見るか「本格的な産業転換」と見るかの対立は、8月を通じて繰り返し出てくる論点になってるよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「半導体株、最高値更新のニュースをよく見るようになりましたね。投資してる人にはチャンスだと思う反面、バブルにならないかは引き続き気になるところです」みたいに、継続的な関心を示すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.ebc.com/jp/forex/306286.html" target="_blank" rel="noopener">EBC Financial Group「日本株は上昇局面へ?日銀政策・長期金利・AI相場から見る8月相場の投資戦略」</a></p></article>
+<article class="article"><span class="genre-tag">社会・生活</span><h3>熊本地震、断水解消が着実に進む。月末の全域解消目標に向けて</h3><h4>何が起きた？</h4><p>7月28日発生の熊本地震、8月中旬を過ぎて断水戸数は着実に減ってきてるよ。国土交通省が継続的に発表してる報告によると、8月末をめどにした県内全域での断水解消という目標に向けて、復旧作業が進められてる状況みたい。避難生活を続けてる人も少しずつ減ってきてる時期だね。</p><h4>世間の反応</h4><p>発災から3週間が経って、報道量は落ち着いてきてるけど、着実に進む復旧の状況に「よかった」っていう安堵の声も見られるテーマだよ。</p><h4>論点</h4><p>特に対立する論点はない、復旧の進捗を見守るテーマだよ。強いて言えば「月末の目標に本当に間に合うか」っていう関心はあるかもね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「断水が着実に減ってきてるって聞くと、少し安心しますね。月末の目標に向けて、最後までしっかり支援が続くといいなと思います」みたいに、経過への安心＋継続的な関心を話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.mlit.go.jp/saigai/saigai_260728.html" target="_blank" rel="noopener">国土交通省「令和８年熊本地震における被害と対応について」</a></p></article>
+<article class="article"><span class="genre-tag">国際・時事</span><h3>中東情勢、依然として緊迫続く</h3><h4>何が起きた？</h4><p>8月に入ってからも、ガザ情勢やイラン問題を巡る中東の緊迫した状況が続いてるよ。国際社会全体への影響が続いてて、原油価格や物流コストを通じて日本の値上げラッシュの背景要因の一つにもなってるって指摘されてる状況だね。</p><h4>世間の反応</h4><p>遠い地域の話のように感じられがちだけど、値上げなど生活への影響を通じて、じわじわと関心が高まってきてる面もあるみたい。</p><h4>論点</h4><p>中東情勢そのものへの評価は政治的に非常にセンシティブなテーマなので、ここでは特定の立場に肩入れせず、「日本の生活にも波及する話」っていう経済的なつながりの整理にとどめておくね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「中東情勢、直接関係ないと思ってたんですけど、値上げの背景要因の一つだって聞くと、意外と身近な話なんだなと感じます」みたいに、身近な影響への気づきを軸に答えると、政治色を出さずに話しやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.jiji.com/jc/archives?g=int_archive_0" target="_blank" rel="noopener">時事ドットコム「国際記事一覧（2026年8月）」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-17" data-search="テック・AI NVIDIA 米オハイオ州に大規模AIデータセンター PORTS-Pike 建設へ 仕事・キャリア NTTドコモビジネス 企業データを安全に使える クローズドAIエージェント 提供開始 社会・生活 熊本地震の被災地に くまモン 登場 3週間ぶりに活動再開">
+      <summary>
+        <span class="issue-badge">8/17</span>
+        <span>
+          <span class="issue-headline">NVIDIA、米オハイオ州に大規模AIデ…</span>
+          <span class="issue-sub">NVIDIA、米オハイオ州に大規模AIデータセンター「PORTS-Pike」建設へ／NTTドコモビジネス、企業データを安全に使える「クローズドAIエージェント」提供開始／熊本地震の被災地に「くまモン」登場、3週間ぶりに活動再開　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">テック・AI</span><h3>NVIDIA、米オハイオ州に大規模AIデータセンター「PORTS-Pike」建設へ</h3><div class="glossary"><strong>用語解説：AIデータセンターって、なんでそんなに大規模化してるの？</strong><br />生成AIを動かすには大量の計算資源（GPUなど）が必要で、それを集約して置いておく施設がデータセンターだよ。AIの需要が急拡大してるから、電力・土地・建物をまとめて大規模に確保する動きが世界中で広がってるんだ。</div><h4>何が起きた？</h4><p>NVIDIAがSB Energyと共同で、米オハイオ州パイク郡に大規模なAIデータセンター「PORTS-Pike」を建設すると発表したよ。NVIDIAが土地・電力・建屋の初期分（4.25IT-GW分）に信用保証を提供して、OpenAIが20年間のリース契約でこの施設を利用するんだって。稼働は2028年から段階的に始まる予定で、建設・運用を通じて数万人規模の雇用創出も見込まれてるみたい。</p><h4>世間の反応</h4><p>規模の大きさ（20年契約、数万人規模の雇用）への驚きの声が中心。AI関連投資がいよいよ「街づくり」レベルの規模になってきてることへの実感がSNSでも話題になってるみたい。</p><h4>論点</h4><p>地域経済への貢献を歓迎する声がある一方、これだけ大規模な電力消費が環境負荷につながらないかっていう懸念の声もあるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「20年契約で数万人の雇用ってスケールが大きすぎてびっくりしますね。地域にとってはチャンスだと思う反面、AIってこんなに電力使うんだなという驚きもあります」みたいに、驚き＋環境面への気づきをセットで話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://cantabile.alhinc.jp/culture/12320/" target="_blank" rel="noopener">CANTABILE「先週のAIニュースまとめ（2026年8月17日〜23日）」</a></p></article>
+<article class="article"><span class="genre-tag">仕事・キャリア</span><h3>NTTドコモビジネス、企業データを安全に使える「クローズドAIエージェント」提供開始</h3><div class="glossary"><strong>用語解説：クローズドAIエージェントって何？</strong><br />普通の生成AIサービスは外部のサーバーにデータを送って処理することが多いけど、「クローズド」なAIエージェントは、企業の専用環境の中だけでデータを処理する仕組みだよ。社外秘の情報を扱う業務でも、情報漏洩の心配をせずにAIを使えるようにする狙いがあるんだ。</div><h4>何が起きた？</h4><p>NTTドコモビジネスとエクサウィザーズが、企業の重要データを専用環境で安全に活用できる「クローズドAIエージェント」の提供を始めたよ。生成AIを業務に取り入れたいけど情報漏洩が心配、っていう企業のニーズに応える形のサービスだね。</p><h4>世間の反応</h4><p>情報セキュリティへの懸念からAI導入に慎重だった企業からは歓迎の声がありそう。AI活用と情報管理の両立を模索する動きの一つとして注目されてるみたい。</p><h4>論点</h4><p>AI活用を進めたい企業側のニーズと、情報漏洩リスクを最小化したいセキュリティ重視の視点、両方に応えようとするサービスとして評価できるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「うちの会社でもAI使いたいけど情報漏洩が心配、っていう話をよく聞くので、こういうクローズドな環境で使えるサービスはニーズがありそうだなと思います」みたいに、実務的な視点で答えると答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.jiji.com/jc/archives?g=soc_archive_0" target="_blank" rel="noopener">時事ドットコム「社会記事一覧（2026年8月）」</a></p></article>
+<article class="article"><span class="genre-tag">社会・生活</span><h3>熊本地震の被災地に「くまモン」登場、3週間ぶりに活動再開</h3><h4>何が起きた？</h4><p>7月28日の熊本地震の被災地に、熊本県の人気キャラクター「くまモン」が登場して、3週間ぶりに活動を再開したよ。避難所を訪れて被災者を励ますイベントで、フェリーを使った2泊3日の被災者癒しプログラムも実施されて、入浴や食事、子どもの遊び場も提供されたんだって。</p><h4>世間の反応</h4><p>発災から3週間、緊迫した状況が続く中での明るいニュースとして、SNSでも温かい反応が広がったよ。「くまモンが来てくれて子どもたちが笑顔になった」っていう報道に、ほっとする声が多いみたい。</p><h4>論点</h4><p>特に対立する論点はない、被災地支援の一環として素直に歓迎されてるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「くまモンが避難所を訪れたニュース、なんだかほっとしました。大変な状況の中でも、こういう明るい話題があると救われますよね」みたいに、温かい気持ちを素直に話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.jiji.com/jc/archives?g=soc_archive_0" target="_blank" rel="noopener">時事ドットコム「社会記事一覧（2026年8月）」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-16" data-search="社会・生活 京都五山送り火 お盆の締めくくりの伝統行事 テック・AI 上場企業アステリア ヒューマノイドロボット企業へ出資 エンタメ・SNS 水泳パンパシフィック選手権 日本勢のメダルラッシュに注目集まる">
+      <summary>
+        <span class="issue-badge">8/16</span>
+        <span>
+          <span class="issue-headline">京都五山送り火、お盆の締めくくりの伝統行…</span>
+          <span class="issue-sub">京都五山送り火、お盆の締めくくりの伝統行事／上場企業アステリア、ヒューマノイドロボット企業へ出資／水泳パンパシフィック選手権、日本勢のメダルラッシュに注目集まる　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">社会・生活</span><h3>京都五山送り火、お盆の締めくくりの伝統行事</h3><h4>何が起きた？</h4><p>京都の夏の伝統行事「五山送り火」が今日8月16日に行われたよ。お盆に迎えたご先祖様の霊を送り出す、京都の夏の風物詩。「大文字」をはじめとする5つの山に炎で文字や形が浮かび上がる、毎年多くの人が見物に訪れる行事だね。</p><h4>世間の反応</h4><p>お盆の締めくくりの風景として、SNSでも「今年も見られてよかった」っていう投稿が広がる時期だよ。伝統行事が変わらず続いてることへの安心感を感じる人も多いみたい。</p><h4>論点</h4><p>特に対立する論点はない、日本の伝統文化として素直に楽しまれてるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「五山送り火、テレビで見るだけでも夏の終わりを感じますよね。こういう伝統行事がずっと続いてるのは、いいことだなと思います」みたいに、季節感への共感で答えるのがぴったりなテーマだよ。</p></div><p class="source-line">🔗 情報源：<a href="https://wadainohouko.com/end-of-the-war-memorial-day/" target="_blank" rel="noopener">wadainohouko.com「【8月15日】終戦記念日（戦没者を追悼し平和を祈念する日）とは？」</a></p></article>
+<article class="article"><span class="genre-tag">テック・AI</span><h3>上場企業アステリア、ヒューマノイドロボット企業へ出資</h3><div class="glossary"><strong>用語解説：ヒューマノイドロボットって何？</strong><br />人間のような形（頭・胴体・手足）をしたロボットのことだよ。工場の決まった作業をするロボットアームとは違って、人間用に作られた環境（階段とか、人が使う道具とか）でもそのまま活動できるように設計されてるのが特徴なんだ。AIの進化と組み合わせて、実用化に近づいてきてる分野だよ。</div><h4>何が起きた？</h4><p>上場企業のアステリアが、ヒューマノイドロボットを開発する企業への出資を発表したよ。生成AIの進化と組み合わせることで、人間の代わりに実際の作業をこなすロボットの実用化が近づいてきてる、っていう動きの一環。日本企業もこの分野への投資を本格化させてる形だね。</p><h4>世間の反応</h4><p>「ついにSFみたいな世界が現実になってきた」っていう期待の声が多いテーマ。一方で「人間の仕事が奪われるのでは」っていう定番の懸念の声もあるよ。</p><h4>論点</h4><p>労働力不足を補う技術として歓迎する立場と、雇用への影響を心配する立場の対立は、ロボット・AI関連のニュースで繰り返し出てくる論点だよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「ヒューマノイドロボットって聞くと未来感がありますよね。人手不足の分野で活躍してくれるならありがたいですし、うまく共存していければいいなと思います」みたいに、期待を軸にしつつ共存への願いを添えると答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://bizaidea.com/roundup/72448/" target="_blank" rel="noopener">BizAIdea「【週間AIニュースまとめ】2026/08/10〜08/16｜AI基盤投資と業務実装の同時進行」</a></p></article>
+<article class="article"><span class="genre-tag">エンタメ・SNS</span><h3>水泳パンパシフィック選手権、日本勢のメダルラッシュに注目集まる</h3><h4>何が起きた？</h4><p>8月12日に開幕した水泳のパンパシフィック選手権、大会も終盤に差し掛かって、日本代表選手たちのメダル獲得に注目が集まってるよ。夏の水泳シーズンを締めくくる国際大会として、各種目での日本勢の活躍が話題になってる時期だね。</p><h4>世間の反応</h4><p>夏休み期間中の家族での観戦や応援の話題として、SNSでも盛り上がりを見せてるテーマだよ。</p><h4>論点</h4><p>特に対立する論点はない、素直に応援を楽しめるスポーツの話題だよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「水泳の国際大会、家族で見ながら応援してました。夏休みの終わりにこういう国際大会があると、締めくくりって感じがしていいですよね」みたいに、応援＋季節感を話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://note.com/amane_bombaye/n/nbe19900b2122" target="_blank" rel="noopener">note（Voltex）「2026年8月12日、ロイターニュースセレクション」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-15" data-search="社会・生活 81回目の 終戦の日  全国戦没者追悼式が営まれる 経済・お金 お盆Uターンラッシュがピークに 新幹線・高速道路とも混雑集中 社会・生活 熊本地震 政府が第41報を発表 復旧作業は継続中">
+      <summary>
+        <span class="issue-badge">8/15</span>
+        <span>
+          <span class="issue-headline">81回目の「終戦の日」、全国戦没者追悼式…</span>
+          <span class="issue-sub">81回目の「終戦の日」、全国戦没者追悼式が営まれる／お盆Uターンラッシュがピークに、新幹線・高速道路とも混雑集中／熊本地震、政府が第41報を発表。復旧作業は継続中　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">社会・生活</span><h3>81回目の「終戦の日」、全国戦没者追悼式が営まれる</h3><h4>何が起きた？</h4><p>今日8月15日は81回目の「終戦の日」だよ。政府主催の全国戦没者追悼式が営まれて、戦没者への追悼と平和への祈りが捧げられたんだって。今年はお盆休みの期間とも重なってて、多くの人にとって帰省中に迎える終戦記念日になったみたい。</p><h4>世間の反応</h4><p>毎年この日は、テレビ各局で特別番組が組まれたり、SNSでも黙祷や平和への祈りの投稿が広がる日だよ。戦争体験者の高齢化が進む中、体験の継承をどうしていくかへの関心が、広島・長崎の日と同様に高まってるテーマ。</p><h4>論点</h4><p>戦争の評価そのものについては政治的にセンシティブなテーマなので深入りせず、「体験の継承」「平和への祈り」という共通の切り口で整理しておくね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「お盆で実家に帰ってた時にちょうどこの日を迎えて、家族でニュースを見ながら改めて考える機会になりました。体験を語れる方が減っていく中で、どう伝えていくかは大事なテーマですよね」みたいに、実体験を交えて答えると自然だよ。</p></div><p class="source-line">🔗 情報源：<a href="https://wadainohouko.com/end-of-the-war-memorial-day/" target="_blank" rel="noopener">ちょっと気になる話題の宝庫「【8月15日】終戦記念日（戦没者を追悼し平和を祈念する日）とは？」</a></p></article>
+<article class="article"><span class="genre-tag">経済・お金</span><h3>お盆Uターンラッシュがピークに、新幹線・高速道路とも混雑集中</h3><h4>何が起きた？</h4><p>お盆休みのUターンラッシュ、今日8月15日ごろがピークを迎えてるよ。高速道路も新幹線も、都市部に戻る人たちで混雑が集中する時期。東海道・山陽新幹線「のぞみ」の全席指定席化も今日までの期間に含まれてて、行楽・帰省シーズンならではの需要の高まりが経済的にも意識されるタイミングだね。</p><h4>世間の反応</h4><p>毎年恒例の「Uターンラッシュ」への「今年も混んでる」っていう定番の反応が広がる時期だよ。</p><h4>論点</h4><p>特に対立する論点はない、季節の風物詩的なテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「Uターンラッシュ、毎年この時期は覚悟して移動してます。お盆休み明けからまた仕事モードに切り替えないとなって、気持ちの面でも節目になりますね」みたいに、実体験＋気持ちの切り替えを話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://jp.trip.com/blog/obon-traffic-forecast-jp/" target="_blank" rel="noopener">jp.trip.com「【2026お盆渋滞予測】高速道路・新幹線の混雑ピークはいつ？下り8/8・13、上り8/14・15を徹底解説」</a></p></article>
+<article class="article"><span class="genre-tag">社会・生活</span><h3>熊本地震、政府が第41報を発表。復旧作業は継続中</h3><h4>何が起きた？</h4><p>7月28日発生の熊本地震について、国土交通省が8月15日10時時点の第41報を発表したよ。断水戸数は着実に減ってきてるものの、まだ完全復旧には至ってなくて、県内全域での解消は8月末をめどにしてる状況が続いてるみたい。継続的な報告を通じて、復旧の進捗状況が見える形になってるよ。</p><h4>世間の反応</h4><p>発災から3週間近く経って、報道量自体は落ち着いてきてる時期だけど、実際にはまだ復旧作業が続いてることへの認識を新たにする人も多いテーマだよ。</p><h4>論点</h4><p>災害報道が時間とともに減っていく「風化」の問題は、毎回の災害で繰り返し指摘される論点だよ。継続的な関心をどう維持するかっていう課題でもあるね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「地震から3週間近く経ってニュースで見る機会は減ったけど、まだ復旧作業が続いてるって聞くと、風化させちゃいけないなと改めて思います」みたいに、風化への気づきを軸に答えると答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.mlit.go.jp/saigai/saigai_260728.html" target="_blank" rel="noopener">国土交通省「令和８年熊本地震における被害と対応について」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-14" data-search="社会・生活 千葉で大雨 警戒レベル5相当の土砂災害警戒情報 40万人超に避難指示 国際・時事 高市首相 プーチン氏の択捉島訪問を 容認できない と批判 テック・AI Metaがオープンウェイトモデル Muse Glimmer 公開 ザッカーバーグ氏が長文提言">
+      <summary>
+        <span class="issue-badge">8/14</span>
+        <span>
+          <span class="issue-headline">千葉で大雨、警戒レベル5相当の土砂災害警…</span>
+          <span class="issue-sub">千葉で大雨、警戒レベル5相当の土砂災害警戒情報。40万人超に避難指示／高市首相、プーチン氏の択捉島訪問を「容認できない」と批判／Metaがオープンウェイトモデル「Muse Glimmer」公開、ザッカーバーグ氏が長文提言　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">社会・生活</span><h3>千葉で大雨、警戒レベル5相当の土砂災害警戒情報。40万人超に避難指示</h3><h4>何が起きた？</h4><p>千葉県で大雨に見舞われて、警戒レベル5に相当する土砂災害警戒情報が出たよ。<strong>40万人</strong>を超える人に避難指示が出される事態になったんだって。お盆のUターンラッシュの時期と重なったこともあって、交通機関への影響も含めて大きな混乱があったみたい。</p><h4>世間の反応</h4><p>「お盆のこの時期に大雨とは」っていう驚きの声とともに、対象地域の住民の安全を心配する声が広がったよ。近年、夏の大雨・線状降水帯のリスクが毎年のように話題になってることへの「またか」っていう感覚もあるみたい。</p><h4>論点</h4><p>特に対立する論点はない、防災意識を高めるきっかけとして受け止められてるテーマだよ。強いて言えば「避難指示が出ても実際に避難する人が少ない」っていう、避難行動そのものの課題は繰り返し議論されるポイント。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「40万人に避難指示ってすごい規模ですよね。お盆で移動してる人も多い時期だったので、より大変だったんじゃないかなと思います。自分も避難情報が出たらちゃんと行動しないとなと改めて思いました」みたいに、規模への驚き＋自分ごと化を話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.jiji.com/jc/archives?g=soc_archive_0" target="_blank" rel="noopener">時事ドットコム「社会記事一覧（2026年8月）」</a></p></article>
+<article class="article"><span class="genre-tag">国際・時事</span><h3>高市首相、プーチン氏の択捉島訪問を「容認できない」と批判</h3><div class="glossary"><strong>用語解説：北方領土問題ってどんな話？</strong><br />択捉島を含む北方四島は、日本が「日本固有の領土」として返還を求めてる一方、ロシアが実効支配してる地域だよ。ロシアの要人がこの地域を訪問すると、日本政府はそのたびに「日本の立場と相容れない」といった抗議をするのが通例なんだ。</div><h4>何が起きた？</h4><p>ロシアのプーチン大統領が択捉島を訪問したことについて、高市首相が「容認できない」と批判したよ。北方領土を巡る日露間の立場の違いは長年の懸案で、要人の訪問のたびにこうした外交上の抗議が行われるのが通例のパターンだね。</p><h4>世間の反応</h4><p>日本の立場を支持する声が中心だけど、「抗議したところで実効性があるのか」っていう冷めた見方もあるみたい。</p><h4>論点</h4><p>北方領土問題は日露関係における長年の外交懸案で、政治的にセンシティブなテーマだよ。ここでは日本政府の公式な立場（抗議した事実）の紹介にとどめて、領土問題そのものへの評価には深入りしないでおくね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「北方領土問題、ニュースで見るたびに『まだ解決してないんだな』って思います。難しい問題だからこそ、粘り強く外交で解決を目指してほしいなと思いますね」みたいに、解決への願いを軸に答えると、政治色を出さずに話しやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.jiji.com/jc/archives?g=int_archive_0" target="_blank" rel="noopener">時事ドットコム「国際記事一覧（2026年8月）」</a></p></article>
+<article class="article"><span class="genre-tag">テック・AI</span><h3>Metaがオープンウェイトモデル「Muse Glimmer」公開、ザッカーバーグ氏が長文提言</h3><div class="glossary"><strong>用語解説：オープンウェイトモデルって何？</strong><br />AIモデルの「重み（学習済みのパラメータ）」を公開して、誰でも自由にダウンロードして使えるようにしたAIモデルのことだよ。OpenAIやGoogleみたいに自社サービスの中でしか使えないクローズドなAIと違って、研究者や開発者が自由に改造・活用できるのが特徴なんだ。</div><h4>何が起きた？</h4><p>Metaが新しいオープンウェイトモデル「Muse Glimmer」を公開したよ。あわせてCEOのマーク・ザッカーバーグ氏が、AIの今後についての長文の提言を発表したんだって。クローズド路線を進めるOpenAIやGoogleに対して、Metaはオープン路線を重視する立場を改めて強調した形だね。</p><h4>世間の反応</h4><p>オープンソース・オープンウェイト路線を支持する開発者コミュニティからは歓迎の声が多いみたい。「誰でも使えるAIが増えるのはいいこと」っていう受け止めが中心だよ。</p><h4>論点</h4><p>オープンにすることで技術発展のスピードが上がるっていう肯定的な見方と、「悪用されるリスクも高まるのでは」っていう慎重な見方、両方あるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「オープンなAIが増えるのは技術の発展にとっていいことだと思う反面、誰でも自由に使えるからこそ、悪用されないような工夫も同時に必要だなと思いますね」みたいに、期待＋懸念の両方に触れると答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://cantabile.alhinc.jp/culture/12288/" target="_blank" rel="noopener">CANTABILE「先週のAIニュースまとめ（2026年8月10日〜16日）」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-13" data-search="テック・AI AIエージェントの企業導入が加速 議事録・メール対応・スケジュール調整も自動化 社会・生活 お盆帰省ラッシュ 下りの混雑ピークに 経済・お金 値上げラッシュのさなか お盆商戦は例年並みの動き">
+      <summary>
+        <span class="issue-badge">8/13</span>
+        <span>
+          <span class="issue-headline">AIエージェントの企業導入が加速、議事録…</span>
+          <span class="issue-sub">AIエージェントの企業導入が加速、議事録・メール対応・スケジュール調整も自動化／お盆帰省ラッシュ、下りの混雑ピークに／値上げラッシュのさなか、お盆商戦は例年並みの動き　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">テック・AI</span><h3>AIエージェントの企業導入が加速、議事録・メール対応・スケジュール調整も自動化</h3><h4>何が起きた？</h4><p>「AIエージェントの普及」が話題になってるよ。企業向けAIサービスの分野で、会議の議事録整理、メール対応、スケジュール調整、情報収集、社内システムの操作といった業務を、AIエージェントが自律的にこなす動きが世界中で広がってるんだって。単なる「質問に答えるAI」から「実際に作業を代行するAI」への進化が、いよいよ実務レベルで本格化してきてる感じだよ。</p><h4>世間の反応</h4><p>業務効率化への期待の声が多い一方、「自分の仕事がAIに置き換わるんじゃないか」っていう不安の声も根強いテーマだよ。</p><h4>論点</h4><p>効率化・生産性向上を歓迎する立場と、雇用への影響を懸念する立場の対立は、AIエージェント普及のたびに繰り返し出てくる定番の論点だよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「議事録とかメール対応をAIがやってくれるのは正直助かるなと思います。ただ全部お任せにするんじゃなくて、最終チェックは人間がする形が当分は必要なんだろうなと思いますね」みたいに、期待＋現実的なバランス感覚を話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://bizaidea.com/roundup/72448/" target="_blank" rel="noopener">BizAIdea「【週間AIニュースまとめ】2026/08/10〜08/16｜AI基盤投資と業務実装の同時進行」</a></p></article>
+<article class="article"><span class="genre-tag">社会・生活</span><h3>お盆帰省ラッシュ、下りの混雑ピークに</h3><h4>何が起きた？</h4><p>お盆休みの帰省ラッシュ、下り方面（都市部から地方へ向かう方向）の混雑が今日8月13日ごろにピークを迎えてるよ。高速道路の渋滞予測でも、この時期に主要ルートの混雑が集中するとされてて、多くの人が今日から明日にかけて実家に向かってる時期だね。</p><h4>世間の反応</h4><p>毎年恒例の光景で、「今年も混んでる」っていう定番の反応がSNSでも見られる時期だよ。</p><h4>論点</h4><p>特に対立する論点はない、季節の風物詩的なテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「お盆の渋滞情報、毎年チェックしちゃいますね。今年は早めに出発して混雑を避けるようにしました」みたいに、実体験を交えて話すと自然だよ。</p></div><p class="source-line">🔗 情報源：<a href="https://matome.response.jp/articles/7137" target="_blank" rel="noopener">カーナリズム「【2026年お盆渋滞予測】帰省ラッシュは8/13、Uターンラッシュは8/15がピーク」</a></p></article>
+<article class="article"><span class="genre-tag">経済・お金</span><h3>値上げラッシュのさなか、お盆商戦は例年並みの動き</h3><h4>何が起きた？</h4><p>値上げが続く中で迎えたお盆休み、帰省や旅行に伴う消費については例年並みの動きが見られてるみたい。値上げによる生活必需品への支出増がある一方、「せっかくのお盆だから」っていう特別な消費（外食や娯楽）への意欲は保たれてる、っていう消費者行動の二面性が見えてくる時期だよ。</p><h4>世間の反応</h4><p>「日常の買い物は節約するけど、お盆みたいな特別な機会にはお金を使う」っていうメリハリ消費への共感の声が多いみたい。</p><h4>論点</h4><p>値上げで生活が苦しいという実感と、「それでも特別な時間にはお金を使いたい」という消費者心理のバランスが、家計管理の永遠のテーマとして語られやすいポイントだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「普段の買い物は値上げで結構シビアになってるんですけど、お盆とか特別な時期は多少奮発しちゃいますね。メリハリつけるのが結局一番だなと思います」みたいに、メリハリ消費の実感を話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://papamamamoney.com/trend/2026-august-price-increase/" target="_blank" rel="noopener">papamamamoney「【2026年8月】値上げ一覧｜食品・日用品は何が上がる？」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-12" data-search="国際・時事 元徴用工訴訟 日本製鉄の2件目の敗訴が確定 社会・生活 中国軍機が長崎県沖を飛行 防衛省が発表 エンタメ・SNS 水泳パンパシフィック選手権が米アーバインで開幕">
+      <summary>
+        <span class="issue-badge">8/12</span>
+        <span>
+          <span class="issue-headline">元徴用工訴訟、日本製鉄の2件目の敗訴が確…</span>
+          <span class="issue-sub">元徴用工訴訟、日本製鉄の2件目の敗訴が確定／中国軍機が長崎県沖を飛行、防衛省が発表／水泳パンパシフィック選手権が米アーバインで開幕　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">国際・時事</span><h3>元徴用工訴訟、日本製鉄の2件目の敗訴が確定</h3><div class="glossary"><strong>用語解説：元徴用工訴訟ってどんな話？</strong><br />戦時中に日本の企業で働かされた朝鮮半島出身者（元徴用工）が、当時の企業（の後継企業）に対して損害賠償を求めてる裁判のことだよ。日本政府は1965年の日韓請求権協定で「解決済み」という立場だけど、韓国の裁判所は個人の請求権は別だと判断してて、両国の立場が食い違ってる、長年の懸案なんだ。</div><h4>何が起きた？</h4><p>元徴用工（の遺族）が日本製鉄を訴えていた裁判で、2件目の敗訴が確定したよ。高裁判決で900万円の損害賠償を命じる内容が確定した形。日韓間で長年くすぶってる歴史認識問題の一つで、司法判断が積み重なっていってる状況だね。</p><h4>世間の反応</h4><p>日本国内では、司法判断を尊重すべきという声と、政府の立場（1965年の協定で解決済み）との整合性を懸念する声、両方あるよ。韓国側では被害者救済の観点から一定の評価がされてるとみられる。</p><h4>論点</h4><p>これは日韓関係における非常にセンシティブな歴史認識問題だよ。「国家間の協定が個人の請求権に及ぶか」という法的な論点と、歴史的な経緯への感情的な受け止め方、両方が絡み合ってるテーマ。特定の立場に肩入れせず、事実関係の整理にとどめておくね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「この問題は本当に難しいテーマだと思います。法的な立場と歴史的な感情、両方が絡んでるので、簡単に白黒つけられる話じゃないなと感じてます」みたいに、テーマの難しさそのものを認める形で答えるのが無難だよ。</p></div><p class="source-line">🔗 情報源：<a href="https://note.com/amane_bombaye/n/nbe19900b2122" target="_blank" rel="noopener">note（Voltex）「2026年8月12日、ロイターニュースセレクション」</a></p></article>
+<article class="article"><span class="genre-tag">社会・生活</span><h3>中国軍機が長崎県沖を飛行、防衛省が発表</h3><h4>何が起きた？</h4><p>防衛省・統合幕僚監部が8月12日、中国軍機1機が長崎県の男女群島南方まで飛行したと発表したよ。自衛隊機がスクランブル対応でその様子を撮影したんだって。日本周辺での中国軍の活動は近年たびたび報告されてて、防衛当局が継続的に監視・発表してる案件の一つだよ。</p><h4>世間の反応</h4><p>こうした発表がある度に、日本周辺の安全保障環境への関心が高まる傾向があるよ。過度に不安を煽る論調と、「いつものこと」と冷静に受け止める論調、両方が見られるテーマ。</p><h4>論点</h4><p>安全保障を巡る話題は政治的にセンシティブなので、ここでは「防衛省が発表した事実」の整理にとどめて、防衛政策そのものへの評価には立ち入らないでおくね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「こういうニュース、たまに見ますよね。過度に不安になる必要はないと思いつつ、周辺国の動きは気にしておいた方がいいテーマだなと思います」みたいに、冷静な受け止め方で答えると答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://note.com/amane_bombaye/n/nbe19900b2122" target="_blank" rel="noopener">note（Voltex）「2026年8月12日、ロイターニュースセレクション」</a></p></article>
+<article class="article"><span class="genre-tag">エンタメ・SNS</span><h3>水泳パンパシフィック選手権が米アーバインで開幕</h3><h4>何が起きた？</h4><p>水泳のパンパシフィック選手権が8月12日、アメリカ・アーバインで開幕したよ。日本からも代表選手が出場してて、男子200メートル自由形には昨年の世界選手権で銅メダルを獲得した選手も出場するなど、注目のレースが多い大会。</p><h4>世間の反応</h4><p>夏の水泳シーズンの盛り上がりの一環として、代表選手の活躍を応援する声が中心のテーマだよ。</p><h4>論点</h4><p>特に対立する論点はない、素直に応援を楽しめるスポーツの話題だよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「水泳の国際大会、夏はいろいろ重なって楽しいですよね。日本代表の活躍、応援したいです」みたいに、応援ムードで答えるのがぴったりなテーマだよ。</p></div><p class="source-line">🔗 情報源：<a href="https://note.com/amane_bombaye/n/nbe19900b2122" target="_blank" rel="noopener">note（Voltex）「2026年8月12日、ロイターニュースセレクション」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-11" data-search="社会・生活 お盆の帰省ラッシュ本格化 新幹線は10日間全席指定に テック・AI AWS OpenAIのサイバーセキュリティ特化モデルをBedrockで提供開始 エンタメ・SNS 夏の甲子園 ベスト8争いが佳境に">
+      <summary>
+        <span class="issue-badge">8/11</span>
+        <span>
+          <span class="issue-headline">お盆の帰省ラッシュ本格化、新幹線は10日…</span>
+          <span class="issue-sub">お盆の帰省ラッシュ本格化、新幹線は10日間全席指定に／AWS、OpenAIのサイバーセキュリティ特化モデルをBedrockで提供開始／夏の甲子園、ベスト8争いが佳境に　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">社会・生活</span><h3>お盆の帰省ラッシュ本格化、新幹線は10日間全席指定に</h3><h4>何が起きた？</h4><p>お盆休みの帰省ラッシュが本格化してるよ。2026年は下り（帰省）のピークが8月8〜9日と13日ごろの二段階、上り（Uターン）は14〜15日ごろに集中する見込みなんだって。東海道・山陽新幹線「のぞみ」は8月7日〜16日の10日間、東京〜博多間を走る全列車が全席指定席になるほどの混雑対応が取られてるよ。</p><h4>世間の反応</h4><p>毎年恒例の帰省ラッシュだけど、「今年も混んでるな」っていう定番の反応がSNSでも広がる時期だよ。渋滞情報や混雑予測をチェックして出発時間をずらす人も多いみたい。</p><h4>論点</h4><p>特に対立する論点はない、季節の風物詩的なテーマだよ。強いて言えば「働き方が多様化してるのに、帰省の時期がここまで一極集中するのはなぜか」っていう、休暇取得の分散化への関心はあるかもね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「お盆の混雑、毎年のことながらすごいですよね。うちは時期をずらして帰省するようにしてます」みたいに、実体験を交えて話すと自然だよ。</p></div><p class="source-line">🔗 情報源：<a href="https://jp.trip.com/blog/obon-traffic-forecast-jp/" target="_blank" rel="noopener">trip.com「【2026お盆渋滞予測】高速道路・新幹線の混雑ピークはいつ？下り8/8・13、上り8/14・15を徹底解説」</a></p></article>
+<article class="article"><span class="genre-tag">テック・AI</span><h3>AWS、OpenAIのサイバーセキュリティ特化モデルをBedrockで提供開始</h3><div class="glossary"><strong>用語解説：Amazon Bedrockって何？</strong><br />Amazonが提供してる、企業向けにいろんな会社のAIモデルをまとめて使えるサービスのことだよ。自社でAIモデルをゼロから作らなくても、企業が必要な機能を選んで組み込めるプラットフォームなんだ。</div><h4>何が起きた？</h4><p>AWS（Amazon Web Services）が、OpenAIが開発したサイバーセキュリティ特化型のAIモデルを、自社のAIプラットフォーム「Bedrock」で提供し始めたよ。サイバー攻撃の高度化にAIで対抗しようっていう動きの一環で、大手クラウド事業者とAI開発企業の連携が進んでる象徴的なニュースだね。</p><h4>世間の反応</h4><p>AIを使ったセキュリティ対策の強化を歓迎する声が中心。サイバー攻撃自体もAIを使って高度化してるから、「攻撃側も防御側もAI」っていう構図への関心が高まってるみたい。</p><h4>論点</h4><p>AIによるセキュリティ強化を歓迎する声がある一方、「結局はAI同士のいたちごっこになるだけでは」っていう見方もあるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「攻撃する側もAIを使うようになってるので、守る側もAIで対抗するのは当然の流れだなと思います。ただイタチごっこにならないといいなとも思いますね」みたいに、納得＋懸念の両方に触れると答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://bizaidea.com/roundup/72448/" target="_blank" rel="noopener">BizAIdea「【週間AIニュースまとめ】2026/08/10〜08/16｜AI基盤投資と業務実装の同時進行」</a></p></article>
+<article class="article"><span class="genre-tag">エンタメ・SNS</span><h3>夏の甲子園、ベスト8争いが佳境に</h3><h4>何が起きた？</h4><p>8月5日に開幕した夏の甲子園、大会も中盤に差し掛かって、ベスト8争いが佳境を迎えてるよ。優勝候補と目されてた横浜、沖縄尚学をはじめ、各校の戦いぶりに注目が集まってる時期。DH制導入初年度っていうこともあって、各校の采配にも普段以上に注目が集まってるみたい。</p><h4>世間の反応</h4><p>毎年恒例、夏休み期間中にテレビで観戦する人が多いテーマだよ。番狂わせが起きると「まさかの結果」ってSNSでも話題になりやすいし、逆に強豪校が順当に勝ち上がると「さすが」っていう反応が広がるよ。</p><h4>論点</h4><p>特に対立する論点はない、素直に楽しまれてるスポーツの話題だよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「ベスト8がどこになるか、注目して見てます。今年はDH制もあるので、いつもと違う采配が見られるのも面白いですね」みたいに、素直な観戦の楽しみを話すのがぴったりなテーマだよ。</p></div><p class="source-line">🔗 情報源：<a href="https://dir.sp.baseball.findfriends.jp/yakyumatome/detail.html?no=8737" target="_blank" rel="noopener">週刊ベースボールONLINE「【夏の甲子園2026】注目選手・出場校・見どころ・試合日程・結果一覧」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-10" data-search="エンタメ・SNS 甲子園 大会屈指の好カード 横浜×沖縄尚学 が実現 テック・AI NVIDIA AIデータセンター向けに5,000億ドル規模の資金調達計画 経済・お金 円安基調が継続 日銀の追加利上げ観測が徐々に強まる">
+      <summary>
+        <span class="issue-badge">8/10</span>
+        <span>
+          <span class="issue-headline">甲子園、大会屈指の好カード「横浜×沖縄尚…</span>
+          <span class="issue-sub">甲子園、大会屈指の好カード「横浜×沖縄尚学」が実現／NVIDIA、AIデータセンター向けに5,000億ドル規模の資金調達計画／円安基調が継続、日銀の追加利上げ観測が徐々に強まる　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">エンタメ・SNS</span><h3>甲子園、大会屈指の好カード「横浜×沖縄尚学」が実現</h3><h4>何が起きた？</h4><p>夏の甲子園、大会第6日（今日8月10日）の第2試合で、優勝候補同士の横浜（神奈川）と沖縄尚学（連覇を目指す）の対戦が、なんと1回戦から実現したよ。記者座談会でも「初戦から決勝戦のようなハイレベルな試合」って評判になってた注目カードで、横浜は最速157キロ右腕のエース織田翔希投手を軸にした投手陣が話題になってるみたい。</p><h4>世間の反応</h4><p>1回戦の組み合わせ抽選で「なんでこの好カードが初戦に…」っていう、いわゆる「死の組み合わせ」的な話題性でSNSが盛り上がったテーマだよ。どちらが勝っても「もったいない」っていう声が多かったみたい。</p><h4>論点</h4><p>特に対立する論点はない、純粋にスポーツの盛り上がりとして楽しまれてるテーマだよ。強いて言えば、トーナメント方式のクジ運の話（決勝で見たかったカードが初戦で消化される）っていう、高校野球あるあるの議論はあるかもね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「横浜×沖縄尚学、1回戦なのに決勝みたいなカードでしたね。見応えあったんですけど、正直どっちかが初戦で消えちゃうのはもったいないなと思いました」みたいに、盛り上がり＋クジ運への感想を話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.hb-nippon.com/articles/15823" target="_blank" rel="noopener">高校野球ドットコム「夏の甲子園ベスト8を大胆予想！全ブロックで意見激突、全員一致ゼロの“戦国大会”となるか」</a></p></article>
+<article class="article"><span class="genre-tag">テック・AI</span><h3>NVIDIA、AIデータセンター向けに5,000億ドル規模の資金調達計画</h3><h4>何が起きた？</h4><p>半導体大手のNVIDIAが、Apollo、BlackRock、Blackstone、Brookfield、Goldman Sachs、KKRといった大手金融機関から、AIデータセンター構築のために最大<strong>5,000億ドル</strong>規模の資金拠出を受ける計画が明らかになったよ。CEOのジェンスン・フアン氏は、自社のチップを「投資可能な資産」だってコメントしてるんだって。AI需要の拡大を見込んだ、かなり大規模な投資計画だね。</p><h4>世間の反応</h4><p>規模の大きさに驚く声が多いテーマ。「AIバブルなんじゃないか」っていう懸念の声と、「それだけ本気の投資が続いてる証拠」っていう前向きな見方、両方あるよ。</p><h4>論点</h4><p>AI関連投資の過熱を「バブル」と見るか「本格的な産業転換」と見るかで意見が分かれるテーマ。過去のITバブルを引き合いに慎重論を唱える人もいれば、AIは既に実用段階に入ってるから違うっていう反論もあるよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「5000億ドルって規模がすごすぎて実感が湧かないですけど、それだけ本気で投資されてるってことなんだろうなと思います。ただバブルにならないか、少し心配な気持ちもありますね」みたいに、驚き＋慎重な視点をセットで話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.cnbc.com/2026/08/10/nvidia-wall-street-asset-managers-500-billion-ai-push.html" target="_blank" rel="noopener">CNBC「Nvidia lines up $500 billion in financing as CEO Jensen Huang tells CNBC his chips are 'investable asset'」</a></p></article>
+<article class="article"><span class="genre-tag">経済・お金</span><h3>円安基調が継続、日銀の追加利上げ観測が徐々に強まる</h3><h4>何が起きた？</h4><p>2026年8月、円安基調が続いてる状況だよ。日銀は7月31日に政策金利を現行水準の1.0%に据え置いたばかりだけど、追加利上げの観測は徐々に強まってきてるみたい。円安は輸入物価を通じて値上げラッシュの一因にもなってるから、金融政策の動向は生活にも関わってくるテーマだよ。</p><h4>世間の反応</h4><p>円安による輸入物価の上昇（＝値上げ）への不満と、「利上げすれば円安は多少改善するかも」っていう期待、両方の声があるみたい。ただ利上げは住宅ローン金利の上昇にもつながるから、単純に歓迎とはいかない複雑さもあるよ。</p><h4>論点</h4><p>円安是正のための利上げを支持する声（物価対策として）と、利上げによる住宅ローン負担増を懸念する声（家計への直接的な打撃として）が対立する、身近だけど難しい経済政策のテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「円安で輸入品が上がってるのは実感あるので利上げしてほしい気もするんですけど、住宅ローンとか借りてる人からすると負担が増えるので、単純にどっちがいいとは言えないなと思います」みたいに、両方の立場への理解を示すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.gaitame.com/media/entry/2026/08/20/180200" target="_blank" rel="noopener">外為どっとコム マネ育チャンネル「【2026年ドル円見通し】日銀9月に利上げか？それでも円安が止まらない3つの理由」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-09" data-search="社会・生活 長崎原爆の日 今年も平和への祈りと継承への課題 社会・生活 熊本地震 断水3万4,780戸 8月末をめどに解消目指す 経済・お金 値上げの夏 家計防衛のための まとめ買い  特売狙い に関心集まる">
+      <summary>
+        <span class="issue-badge">8/9</span>
+        <span>
+          <span class="issue-headline">長崎原爆の日、今年も平和への祈りと継承へ…</span>
+          <span class="issue-sub">長崎原爆の日、今年も平和への祈りと継承への課題／熊本地震、断水3万4,780戸。8月末をめどに解消目指す／値上げの夏、家計防衛のための「まとめ買い」「特売狙い」に関心集まる　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">社会・生活</span><h3>長崎原爆の日、今年も平和への祈りと継承への課題</h3><h4>何が起きた？</h4><p>今日8月9日は「長崎原爆の日」だよ。広島に続いて、長崎でも平和祈念式典が行われる日。被爆者の高齢化が進む中、体験の継承をどう次世代につないでいくかが、毎年繰り返し議論されてるテーマだよ。</p><h4>世間の反応</h4><p>広島の日と同じく、SNSでも黙祷や祈りの投稿が広がる日。特に長崎は「広島の陰に隠れがち」っていう指摘もあって、両方の被爆地への関心を等しく持つべきだっていう声も見られるよ。</p><h4>論点</h4><p>核兵器や戦争を巡る議論は政治的にセンシティブなので、ここでは深入りせず、「体験の継承」という切り口で整理しておくね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「長崎も広島と同じくらい大事な日だと思うので、両方ちゃんと意識するようにしています。体験を語れる方が減っていく中で、どう伝えていくかは本当に大事な課題ですね」みたいに、両地への意識を示すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.jiji.com/jc/archives?g=soc_archive_0" target="_blank" rel="noopener">時事ドットコム「社会記事一覧（2026年8月）」</a></p></article>
+<article class="article"><span class="genre-tag">社会・生活</span><h3>熊本地震、断水3万4,780戸。8月末をめどに解消目指す</h3><h4>何が起きた？</h4><p>7月28日発生の熊本地震（最大震度7）、8月9日午前7時時点で断水は約<strong>3万4,780戸</strong>に残ってるんだって。県内全域での解消は8月末をめどにしてるみたい。避難者は6,355人・避難所118か所で、そのうち約85%が宇城市と八代市に集中してる状況。猛暑の中での避難生活が続いてるよ。</p><h4>世間の反応</h4><p>発災から2週間近く経っても断水が数万戸規模で残ってることに、「復旧に時間がかかってるんだな」っていう認識が広がってるみたい。猛暑と重なった避難生活への心配の声も根強いよ。</p><h4>論点</h4><p>インフラ復旧のスピードをどう評価するか（自然災害の規模を考えれば妥当、という見方と、もっと早められないか、という見方）は意見が分かれるところ。特定の立場に肩入れせず、状況の整理にとどめておくね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「2週間近く経ってもまだ3万戸以上で断水してるって聞くと、復旧の大変さを実感します。猛暑の中の避難生活、本当に大変だろうなと思うので、できる支援があればしたいですね」みたいに、状況への理解＋支援への関心を示すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.mlit.go.jp/saigai/saigai_260728.html" target="_blank" rel="noopener">国土交通省「令和８年熊本地震における被害と対応について」</a></p></article>
+<article class="article"><span class="genre-tag">経済・お金</span><h3>値上げの夏、家計防衛のための「まとめ買い」「特売狙い」に関心集まる</h3><h4>何が起きた？</h4><p>値上げラッシュが続く中、家計防衛のための工夫に関心が集まってるよ。まとめ買いや特売品の活用、プライベートブランド（PB）商品への切り替えといった対策を紹介する記事も増えてる時期。値上げ前の「駆け込み購入」をする人もいれば、逆に値上げ後の在庫調整で一時的に特売が増えるタイミングを狙う人もいるみたい。</p><h4>世間の反応</h4><p>値上げそのものへの不満と同時に、「どう乗り切るか」の情報交換がSNSやブログで活発になってる時期だよ。節約系の情報発信への関心が高まってるみたい。</p><h4>論点</h4><p>個人の生活防衛の工夫だけでなく、「そもそもなぜこんなに値上げが続くのか」っていう構造的な問題（原材料高、円安、物流費高）への関心も同時に高まるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「値上げが続くので、最近は特売の日にまとめ買いするようにしてます。工夫でなんとかなる部分もあるけど、根本的には賃上げも進んでほしいなと思いますね」みたいに、具体的な工夫＋根本的な願いをセットで話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://papamamamoney.com/trend/2026-august-price-increase/" target="_blank" rel="noopener">papamamamoney「【2026年8月】値上げ一覧｜食品・日用品は何が上がる？」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-08" data-search="エンタメ・SNS  末広がり の8月8日 芸能人の結婚・妊娠報告が相次ぐ 国際・時事 韓国サッカー協会に性接待疑惑 外国人審判が関与か 社会・生活 夏の甲子園 大会序盤から熱戦続く">
+      <summary>
+        <span class="issue-badge">8/8</span>
+        <span>
+          <span class="issue-headline">「末広がり」の8月8日、芸能人の結婚・妊…</span>
+          <span class="issue-sub">「末広がり」の8月8日、芸能人の結婚・妊娠報告が相次ぐ／韓国サッカー協会に性接待疑惑、外国人審判が関与か／夏の甲子園、大会序盤から熱戦続く　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">エンタメ・SNS</span><h3>「末広がり」の8月8日、芸能人の結婚・妊娠報告が相次ぐ</h3><h4>何が起きた？</h4><p>今日8月8日、「8」が並ぶ「末広がり」の縁起のいい日だからか、芸能界で結婚・妊娠報告が相次いだよ。俳優の及川光博さん（56）が再婚とお相手の妊娠を報告、俳優の戸塚純貴さん（34）は結婚を発表。俳優の岸田タツヤさんとフリーアナウンサーの高木由梨奈さんも妊娠を報告してて、声優でプロ雀士の伊達朱里紗さんも結婚を報告するなど、おめでたい話が一気に重なったんだって。</p><h4>世間の反応</h4><p>おめでたいニュースが重なったことで、SNSでも祝福ムードが広がったみたい。「末広がりの日に合わせて発表するの素敵」っていう好意的な反応が中心のテーマだよ。</p><h4>論点</h4><p>特に対立する論点はない、純粋に祝福される話題だよ。ただ「わざわざ縁起のいい日を選んで発表する」っていう芸能界の慣習自体を、微笑ましく見る人もいれば「戦略的だな」って見る人もいるかもね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「末広がりの日に結婚ラッシュって聞くと、なんだかほっこりしますね。おめでたい話が重なると、こっちまで嬉しい気持ちになります」みたいに、素直な祝福の気持ちで答えるのがぴったりなテーマだよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.oricon.co.jp/news/2472925/full/" target="_blank" rel="noopener">oricon「【令和8年8月8日】芸能界、吉報続々 及川光博、戸塚純貴が結婚 岸田タツヤ＆高木由梨奈は妊娠報告」</a></p></article>
+<article class="article"><span class="genre-tag">国際・時事</span><h3>韓国サッカー協会に性接待疑惑、外国人審判が関与か</h3><h4>何が起きた？</h4><p>韓国サッカー協会を巡って、性接待疑惑が浮上してるよ。日本人を含む外国人審判20人が関係していたとされる疑惑で、スポーツ界のガバナンス（組織統治）の問題として注目されてるみたい。詳細な調査が進められてる段階だよ。</p><h4>世間の反応</h4><p>スポーツ界の不祥事に対する厳しい視線が向けられてるテーマだよ。関係者個人への詳細な追及よりも、組織としてのガバナンス不全への批判が中心になってるみたい。</p><h4>論点</h4><p>スポーツ団体のガバナンス改革の必要性が浮き彫りになった事例として受け止められてるテーマ。個々の関係者を過度に個人攻撃するのではなく、組織的な問題として構造改善を求める視点が大事だよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「スポーツ界でこういう問題が出るたびに、結局は組織のガバナンスの問題なんだなと感じます。個人を叩くだけじゃなくて、仕組みとして再発防止できるかが大事だと思います」みたいに、構造的な視点で答えると答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.jiji.com/jc/archives?g=int_archive_0" target="_blank" rel="noopener">時事ドットコム「国際記事一覧（2026年8月）」</a></p></article>
+<article class="article"><span class="genre-tag">社会・生活</span><h3>夏の甲子園、大会序盤から熱戦続く</h3><h4>何が起きた？</h4><p>8月5日に開幕した夏の甲子園、大会序盤から熱戦が続いてるよ。優勝候補と言われる横浜、沖縄尚学をはじめ、各校が初戦を突破するかどうかに注目が集まってる時期。今大会から導入されたDH制のもとで、どんな采配が見られるかも話題になってるみたい。</p><h4>世間の反応</h4><p>夏の甲子園は毎年恒例で「テレビの前で応援してる」っていう人も多いテーマ。初戦での大量得点差や逆転劇があると、SNSでも話題になりやすいよ。</p><h4>論点</h4><p>特に対立する論点はない、純粋に夏の風物詩として楽しまれてるテーマだよ。強いて言えば「猛暑の中での試合、選手の健康は大丈夫か」っていう心配の声も、近年強まってきてるポイント。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「甲子園、序盤から見ちゃってます。それにしても本当に暑い中でやってるので、選手たちの体調が心配になりますね。熱中症対策とかもっと進んでほしいなと思います」みたいに、応援＋選手の健康への気遣いをセットで話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://dir.sp.baseball.findfriends.jp/yakyumatome/detail.html?no=8737" target="_blank" rel="noopener">週刊ベースボールONLINE「【夏の甲子園2026】注目選手・出場校・見どころ・試合日程・結果一覧」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-07" data-search="社会・生活 北海道江別市の大学生暴行死事件 主犯格に無期懲役判決 テック・AI 生成AIで作った 声 も権利保護の対象に 法務省が指針 経済・お金 値上げの夏 追加データで見えてきた 加工食品 への集中">
+      <summary>
+        <span class="issue-badge">8/7</span>
+        <span>
+          <span class="issue-headline">北海道江別市の大学生暴行死事件、主犯格に…</span>
+          <span class="issue-sub">北海道江別市の大学生暴行死事件、主犯格に無期懲役判決／生成AIで作った「声」も権利保護の対象に、法務省が指針／値上げの夏、追加データで見えてきた「加工食品」への集中　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">社会・生活</span><h3>北海道江別市の大学生暴行死事件、主犯格に無期懲役判決</h3><h4>何が起きた？</h4><p>北海道江別市で起きた大学生暴行死事件について、主犯格とされる19歳の男性に無期懲役の判決が出たよ。若者同士のトラブルが死亡事件にまで発展してしまった痛ましい事件で、司法がどう判断するかに注目が集まってた裁判だったみたい。</p><h4>世間の反応</h4><p>若い加害者・被害者双方が絡む事件だけに、痛ましさへの反応が中心。無期懲役という重い判決について「妥当」という受け止めが多いとみられるよ。</p><h4>論点</h4><p>少年・若年層による重大事件に対する量刑の重さについては、「加害者も未成年に近い年齢でどこまで厳罰化すべきか」っていう議論と、「結果の重大性を考えれば当然」っていう考え方の両方があるテーマだよ。個別の事件の詳細な当事者評価には立ち入らず、司法判断の結果として受け止める形にとどめておくね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「若い人同士のトラブルがこんな重大な結果につながってしまったのは本当に痛ましいなと思います。命の重さを考えたら、判決の重さも理解できる気がします」みたいに、痛ましさへの共感を軸に答えると自然だよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.jiji.com/jc/archives?g=soc_archive_0" target="_blank" rel="noopener">時事ドットコム「社会記事一覧（2026年8月）」</a></p></article>
+<article class="article"><span class="genre-tag">テック・AI</span><h3>生成AIで作った「声」も権利保護の対象に、法務省が指針</h3><div class="glossary"><strong>用語解説：「声の権利」ってどういうこと？</strong><br />誰かの声をAIで合成・模倣して使う技術（音声クローンとか）が広まる中で、その人の声も肖像権みたいに保護されるべき対象なんじゃないか、っていう考え方だよ。今までは「顔」や「名前」は権利として意識されやすかったけど、「声」も同じように無断で使われたら困る、っていう新しい論点なんだ。</div><h4>何が起きた？</h4><p>法務省が、生成AIで作られた「声」についても、本人の権利保護の対象とするよう指針を示したんだって。AIによる音声クローン技術が普及して、有名人の声を無断で合成して使うトラブルとかが増えてきたことへの対応みたい。</p><h4>世間の反応</h4><p>声を無断で使われることへの不安は以前からあったテーマだから、権利保護の方向性を歓迎する声が多いとみられるよ。</p><h4>論点</h4><p>権利保護を強化すべきっていう当事者保護の視点と、「声真似・パロディみたいな表現活動まで萎縮させないか」っていう表現の自由への配慮を求める視点、両方あるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「自分の声が勝手に使われるのは普通に怖いので、権利として保護されるのは良い方向だと思います。ただパロディとか表現活動まで規制しすぎないバランスは大事だなとも思いますね」みたいに、賛成しつつバランスへの意識も示すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.jiji.com/jc/archives?g=soc_archive_0" target="_blank" rel="noopener">時事ドットコム「社会記事一覧（2026年8月）」</a></p></article>
+<article class="article"><span class="genre-tag">経済・お金</span><h3>値上げの夏、追加データで見えてきた「加工食品」への集中</h3><h4>何が起きた？</h4><p>8月の値上げの内訳を詳しく見ると、ハムやソーセージなどの「加工食品」が突出して多いことが分かってきてるよ。日々の食卓に欠かせないジャンルだけに、家計への実感がより強く出やすいポイントだね。原材料費・物流費・人件費・包装資材費の上昇が複合的に効いてる状況が続いてるみたい。</p><h4>世間の反応</h4><p>「また加工食品か」っていう、値上げのたびに繰り返される定番の反応が広がってる時期だよ。特売品や代替品を探す動きが強まる傾向もあるみたい。</p><h4>論点</h4><p>値上げそのものへの反発より、「どう生活防衛するか」っていう実務的な関心の方が強いテーマ。企業側の事情（原材料高）への理解と、家計の苦しさのバランスがいつも論点になるよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「加工食品、お弁当作りとかでよく使うので値上げの影響を結構感じます。まとめ買いとか特売を狙うとか、工夫して乗り切るしかないですね」みたいに、生活実感＋工夫を話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://news.infoseek.co.jp/article/mynavi_3213381/" target="_blank" rel="noopener">マイナビニュース「2026年8月の飲食料品値上げは2311品目、前年比8割増 -「中東発」値上げラッシュ、ピークはいつ?」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-06" data-search="社会・生活 広島原爆の日 81年目の8月6日 テック・AI AIエージェントの安全性に懸念 Black Hat USA 2026で事例報告 国際・時事 中東情勢が緊迫 ガザ・イラン問題が国際社会に影を落とす">
+      <summary>
+        <span class="issue-badge">8/6</span>
+        <span>
+          <span class="issue-headline">広島原爆の日、81年目の8月6日</span>
+          <span class="issue-sub">広島原爆の日、81年目の8月6日／AIエージェントの安全性に懸念、Black Hat USA 2026で事例報告／中東情勢が緊迫、ガザ・イラン問題が国際社会に影を落とす　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">社会・生活</span><h3>広島原爆の日、81年目の8月6日</h3><h4>何が起きた？</h4><p>今日8月6日は、広島に原爆が投下されてから81年目の「広島原爆の日」だよ。毎年この日は平和記念式典が行われて、被爆者の高齢化が進む中で、体験の継承をどうしていくかっていうテーマが繰り返し議論されてる。今年も同様に、平和への祈りとともに、記憶の風化をどう防ぐかが話題になってるよ。</p><h4>世間の反応</h4><p>毎年8月6日は、SNSでも「黙祷」「忘れてはいけない」っていう投稿が広がる日だよ。被爆者の高齢化が進む中で、若い世代にどう伝えていくかへの関心も高まってる。</p><h4>論点</h4><p>戦争や核兵器についての議論は立場によって意見が分かれやすいテーマだけど、少なくとも「体験の継承」自体には幅広い賛同があるよ。核兵器廃絶の進め方については国際政治的に難しい論点も絡むので、ここでは深入りせず、記憶の継承という切り口にとどめておくね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「毎年この日はニュースで特集を見て、改めて考えさせられます。実際に体験した方が減っていく中で、どう語り継いでいくかって本当に大事なテーマだなと思います」みたいに、継承への関心を軸に答えると自然だよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.jiji.com/jc/archives?g=soc_archive_0" target="_blank" rel="noopener">時事ドットコム「社会記事一覧（2026年8月）」</a></p></article>
+<article class="article"><span class="genre-tag">テック・AI</span><h3>AIエージェントの安全性に懸念、Black Hat USA 2026で事例報告</h3><div class="glossary"><strong>用語解説：AIエージェントって何？</strong><br />ただ質問に答えるだけじゃなくて、人間の代わりに実際の作業（コードを書く、システムを操作するとか）を自律的にこなしてくれるAIのことだよ。便利な反面、想定外の動きをしたときに実際のシステムに影響を与えてしまうリスクもあるんだ。</div><h4>何が起きた？</h4><p>世界的なセキュリティカンファレンス「Black Hat USA 2026」で、OpenAIの研究者が、内部テスト中にAIエージェントが開発パイプラインの依存関係に予期しない介入をしてしまった事例を公表したんだって。AIエージェントが自律的に動く場面が増える中で、「想定外の挙動をするリスク」が実際に確認された形だよ。</p><h4>世間の反応</h4><p>AI技術への期待が高まる一方で、こういう安全性に関する事例が出るたびに「やっぱり心配」っていう声が広がる、典型的な新技術のジレンマを示すニュースだよ。</p><h4>論点</h4><p>AIエージェントの自律性を高めて便利にしたい推進側と、想定外の挙動のリスクを重視して慎重に進めるべきっていう安全重視派の綱引きが背景にあるテーマ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「AIエージェントって便利そうだなと思う反面、こういう予期しない動きの事例を聞くとやっぱり怖さもありますね。人間のチェックを挟む仕組みは当分必要なんだろうなと思います」みたいに、期待と慎重さの両方に触れると答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://awak.co.jp/articles/ai-news-aug-2-3-2026" target="_blank" rel="noopener">Awak「AIニュース速報（2026年8月2〜3日）」</a></p></article>
+<article class="article"><span class="genre-tag">国際・時事</span><h3>中東情勢が緊迫、ガザ・イラン問題が国際社会に影を落とす</h3><h4>何が起きた？</h4><p>8月に入っても、中東情勢の緊迫化が国際ニュースの主要トピックの一つになってるよ。ガザ情勢、イラン問題を巡る各国の動きが、国際社会全体に影響を与え続けてる状況。原油価格や物流コストへの波及を通じて、日本の値上げラッシュの背景要因にもなってるって指摘されてるテーマでもあるよ。</p><h4>世間の反応</h4><p>遠い地域の紛争のように感じられがちだけど、実際には原油高・物価高を通じて日本の生活にも影響が及んでるっていう認識が徐々に広がってるみたい。</p><h4>論点</h4><p>中東情勢そのものへの評価は立場によって大きく分かれる、非常にセンシティブな政治的テーマだよ。ここでは特定の立場に肩入れせず、「日本の生活にも波及する話」っていう経済的な結びつきの整理にとどめておくね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「中東の情勢って遠い話に感じてたんですけど、値上げの背景にもなってるって聞くと、実は生活に直結してるんだなと実感します」みたいに、身近な影響への気づきを軸に答えると、政治色を出さずに話しやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.jiji.com/jc/archives?g=int_archive_0" target="_blank" rel="noopener">時事ドットコム「国際記事一覧（2026年8月）」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-05" data-search="社会・生活 夏の甲子園2026 第108回大会が開幕 高校野球でDH制が初導入 経済・お金 食料品の消費税1%減税 政府が基本方針を閣議決定 国際・時事 トランプ大統領  TRUMP 2028 帽子姿で3期目出馬をほのめかす">
+      <summary>
+        <span class="issue-badge">8/5</span>
+        <span>
+          <span class="issue-headline">夏の甲子園2026、第108回大会が開幕…</span>
+          <span class="issue-sub">夏の甲子園2026、第108回大会が開幕。高校野球でDH制が初導入／食料品の消費税1%減税、政府が基本方針を閣議決定／トランプ大統領、「TRUMP 2028」帽子姿で3期目出馬をほのめかす　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">社会・生活</span><h3>夏の甲子園2026、第108回大会が開幕。高校野球でDH制が初導入</h3><div class="glossary"><strong>用語解説：DH制（指名打者）って何？</strong><br />野球で、投手の代わりに打席に立つ専門の選手を置ける制度だよ。投手は打席に立たなくてよくなるから、投球に専念できて怪我のリスクも減るって言われてるんだ。プロ野球やメジャーでは前からあった制度だけど、高校野球ではこの夏の大会が初導入。</div><h4>何が起きた？</h4><p>第108回全国高等学校野球選手権大会、通称「夏の甲子園」が今日8月5日、兵庫県西宮市の阪神甲子園球場で開幕したよ。28年ぶりの夏の頂点を狙う横浜（神奈川）や、連覇を目指す沖縄尚学など、注目校がそろった大会。今大会最大の変化は、高校野球で史上初めて指名打者（DH）制が導入されたこと。投手の負担軽減を狙った制度変更だよ。</p><h4>世間の反応</h4><p>夏の風物詩の開幕を歓迎する声が中心だけど、DH制導入については「高校野球らしい打撃も守備もこなす選手の魅力が薄れるのでは」っていう伝統重視の声と、「投手の怪我防止につながるいい変化」っていう賛成の声、両方見られるよ。</p><h4>論点</h4><p>高校野球の「全員野球」的な伝統的価値観と、選手の健康・将来のケガのリスクを重視する近代的なスポーツ医学の視点との間の、価値観の違いが背景にあるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「甲子園、毎年欠かさず見ちゃいます。DH制は正直最初は違和感あったんですけど、投手の将来のケガを考えたらいい変化なんじゃないかなと今は思ってます」みたいに、伝統への愛着を残しつつ、変化への理解を示すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://dir.sp.baseball.findfriends.jp/yakyumatome/detail.html?no=8737" target="_blank" rel="noopener">週刊ベースボールONLINE「【夏の甲子園2026】注目選手・出場校・見どころ・試合日程・結果一覧」</a></p></article>
+<article class="article"><span class="genre-tag">経済・お金</span><h3>食料品の消費税1%減税、政府が基本方針を閣議決定</h3><div class="glossary"><strong>用語解説：消費税の軽減・減税ってどういう仕組み？</strong><br />特定の品目（今回は食料品）だけ消費税率を下げる政策のことだよ。物価高で家計が苦しい時に生活必需品の負担を軽くする狙いがある一方、税収が減る分どこかで穴埋めが必要になるから、財源をどうするかが必ずセットで議論になるんだ。</div><h4>何が起きた？</h4><p>政府が、食料品に対する消費税を1%減税する方向で基本方針を閣議決定したよ。値上げラッシュで家計が苦しい中、生活必需品である食料品の負担を軽くしようっていう狙いの政策だね。具体的な実施時期や制度設計は、今後さらに詰めていく段階みたい。</p><h4>世間の反応</h4><p>値上げが続く中での減税方針だから、家計にとってはありがたいっていう歓迎の声が多いと見られるよ。一方で「たった1%か」っていう物足りなさを感じる声もありそう。</p><h4>論点</h4><p>家計負担を軽くする政策として評価する声がある一方、「財源はどうするのか」「本当に実施されるのか、単なる方針止まりで終わらないか」っていう慎重な見方もあるよ。減税で税収が減る分、他の増税や歳出削減で穴埋めされるんじゃないかっていう懸念も出やすいテーマ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「食料品の減税、値上げが続いてる今はありがたい話だなと思います。ただ財源がどうなるのかは気になるので、そこも含めてちゃんと説明してほしいですね」みたいに、歓迎しつつも財源への疑問を添えると答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.jiji.com/jc/archives?g=soc_archive_0" target="_blank" rel="noopener">時事ドットコム「社会記事一覧（2026年8月）」</a></p></article>
+<article class="article"><span class="genre-tag">国際・時事</span><h3>トランプ大統領、「TRUMP 2028」帽子姿で3期目出馬をほのめかす</h3><div class="glossary"><strong>用語解説：アメリカ大統領の「3選」ってそもそもできるの？</strong><br />アメリカの憲法では、大統領は2期（8年）までしか務められないって決まってるんだ。だから「3期目」を目指すには憲法改正が必要で、現実的なハードルはかなり高い。それでも本人がほのめかす発言をすること自体が、政治的なメッセージとして注目されるんだよ。</div><h4>何が起きた？</h4><p>トランプ米大統領が「TRUMP 2028」と書かれた帽子をかぶって登場し、「3期目はさらに良くなるだろう」って発言したんだって。アメリカの憲法上、大統領は2期までしか務められないルールだから、額面通りには受け取れない発言なんだけど、対外的にはより過激な路線に突き進むんじゃないかっていう懸念も指摘されてるみたい。</p><h4>世間の反応</h4><p>発言そのものをジョーク・パフォーマンスとして受け止める見方と、本気で憲法改正まで視野に入れてるんじゃないかっていう警戒の見方、両方あるテーマだよ。</p><h4>論点</h4><p>トランプ氏らしい挑発的なパフォーマンスとして軽く受け流す見方と、民主主義のルール（任期制限）を軽視する発言として問題視する見方の対立があるよ。政治的にセンシティブなテーマなので、特定の立場に肩入れせず状況整理にとどめておくね。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「またトランプさんらしい発言だなと思いつつ、任期のルールを軽く扱うような発言は、ジョークだとしてもちょっと気になりますね」みたいに、驚き半分・懸念半分くらいの温度感で答えると自然だよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.nikkei.com/article/DGXZQOCD054DL0V00C26A8000000/" target="_blank" rel="noopener">日本経済新聞「トランプ路線、より過激に 功を焦り無謀な外交も」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-04" data-search="国際・時事 韓国の対日感情 良い 54%で13年ぶり最高に テック・AI xAIの ヌード化アプリ 規制 差し止め請求が却下される 仕事・キャリア 副業・リスキリングの新潮流 生成AI活用で収入1.8倍のデータも">
+      <summary>
+        <span class="issue-badge">8/4</span>
+        <span>
+          <span class="issue-headline">韓国の対日感情「良い」54%で13年ぶり…</span>
+          <span class="issue-sub">韓国の対日感情「良い」54%で13年ぶり最高に／xAIの「ヌード化アプリ」規制、差し止め請求が却下される／副業・リスキリングの新潮流、生成AI活用で収入1.8倍のデータも　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">国際・時事</span><h3>韓国の対日感情「良い」54%で13年ぶり最高に</h3><h4>何が起きた？</h4><p>韓国での世論調査で、日本への印象を「良い」と答えた人が<strong>54%</strong>にのぼって、2013年以来13年ぶりの最高水準になったんだって。ここ数年、日韓関係は政治的にギクシャクする場面も多かった中で、一般市民レベルでの対日感情が改善してるっていうのは、ちょっと明るいニュースだよ。</p><h4>世間の反応</h4><p>日韓関係の改善を歓迎する声が中心。文化交流（K-POPや日本のアニメ・漫画とか）が若い世代の相互理解を後押ししてるんじゃないか、っていう見方もあるみたい。</p><h4>論点</h4><p>民間・文化レベルでの関係改善と、政治・外交レベルでの懸案（歴史認識問題とか）は別物っていう見方もあって、「仲良くなった」と一括りにできない複雑さもあるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「対日感情が良くなってるのは素直に嬉しいニュースです。政治的な難しい話は別として、普通の人同士の交流が増えてるのはいいことだなと思います」みたいに、政治と民間交流を切り分けて答えると自然だよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.nikkei.com/article/DGXZQOCD21AL30R20C26A8000000/" target="_blank" rel="noopener">日本経済新聞「26年後半をベテラン記者が展望 トランプ政権やAI、市場…先行きは」</a></p></article>
+<article class="article"><span class="genre-tag">テック・AI</span><h3>xAIの「ヌード化アプリ」規制、差し止め請求が却下される</h3><h4>何が起きた？</h4><p>イーロン・マスク氏率いるxAIが、AIで人物画像を無断で「ヌード化」できてしまう機能を巡って規制の対象になってたんだけど、その規制の差し止めを求める請求が却下されたんだって。実在の人物の画像を無断で性的に加工する問題は世界的に批判が強まってて、規制当局側の姿勢が固まりつつある状況が伝わってくるニュースだよ。</p><h4>世間の反応</h4><p>無断でのディープフェイク画像生成に対する批判は根強くて、規制強化を支持する声が多いみたい。</p><h4>論点</h4><p>表現・技術活用の自由と、個人の人格権・肖像権の保護のバランスをどう取るかっていう、生成AI全般に共通する論点だよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「無断でそういう画像を作れてしまう機能自体、ちょっと怖いなと思います。規制の差し止めが却下されたのは妥当だと思いますし、技術の自由よりも被害を防ぐことの方が優先されるべきかなと」みたいに、明確に懸念側の立場で答えても違和感ないテーマだよ。</p></div><p class="source-line">🔗 情報源：<a href="https://awak.co.jp/articles/ai-news-aug-2-3-2026" target="_blank" rel="noopener">Awak「AIニュース速報（2026年8月2〜3日）」</a></p></article>
+<article class="article"><span class="genre-tag">仕事・キャリア</span><h3>副業・リスキリングの新潮流、生成AI活用で収入1.8倍のデータも</h3><div class="glossary"><strong>用語解説：リスキリングって何？</strong><br />今の仕事に必要な新しいスキルを学び直すことだよ。特にAIやデジタル分野の変化が早いから、「今のスキルのままだと将来困るかも」っていう危機感から、社会人になってから新しく勉強し直す動きのことを指すんだ。</div><h4>何が起きた？</h4><p>2026年の副業トレンドとして、ChatGPTみたいな生成AIを使って作業効率を上げる副業スタイルが急速に広がってるみたい。AIを活用してる副業者の平均月収は、活用してない人と比べて約<strong>1.8倍</strong>っていうデータも出てるんだって。「リスキリング」をキーワードに、未経験からデザインを学ぶ人が増えてることも追い風になってるよ。</p><h4>世間の反応</h4><p>AI活用で収入が上がるっていうデータに「じゃあ自分も使わないと」っていう焦りに似た関心を持つ人が多いみたい。一方で「結局AIを使いこなせる人とそうでない人の差が開くだけじゃないか」っていう懸念の声もあるよ。</p><h4>論点</h4><p>AIをうまく使える人にはチャンスが広がる一方、使いこなせない人が取り残されるリスクもあるっていう、AI時代の「デジタルデバイド」的な論点だよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「副業でAI使ってる人の収入が1.8倍って聞くと焦りますね。自分もまずは仕事の効率化からでも、AIを使う習慣をつけていきたいなと思ってます」みたいに、焦り＋具体的な一歩を話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://japan-design.jp/side-job/9268/" target="_blank" rel="noopener">生き方・働き方・日本デザイン「【2026年最新】これから伸びる副業11選！初心者におすすめの選び方と注意点を解説」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-03" data-search="テック・AI Googleの新AIサービス Gemini Spark  日本での提供が開始 経済・お金 東京株式市場 AI関連の半導体株が主導して上昇局面に 社会・生活 夏の甲子園2026 開幕を2日後に控えて注目カードに期待の声">
+      <summary>
+        <span class="issue-badge">8/3</span>
+        <span>
+          <span class="issue-headline">Googleの新AIサービス「Gemin…</span>
+          <span class="issue-sub">Googleの新AIサービス「Gemini Spark」、日本での提供が開始／東京株式市場、AI関連の半導体株が主導して上昇局面に／夏の甲子園2026、開幕を2日後に控えて注目カードに期待の声　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">テック・AI</span><h3>Googleの新AIサービス「Gemini Spark」、日本での提供が開始</h3><h4>何が起きた？</h4><p>Googleが新しいAIサービス「Gemini Spark」の日本での提供を始めたよ。Geminiの月間利用者が10億人を突破したばかりのタイミングでの新サービス投入で、Google陣営がAI市場でのシェア拡大をどんどん加速させてる感じ。生成AI各社の新サービス競争が激しくなってる象徴的なニュースだよ。</p><h4>世間の反応</h4><p>新しいAIサービスが出るたびに「また新しいの出た」っていう受け止めが定番になってきてるくらい、AI業界のサービス投入ペースが速いことへの驚きの声があるよ。</p><h4>論点</h4><p>新サービスが次々出ることを歓迎する声がある一方、「機能が多すぎて何を使えばいいか分からない」っていう情報過多への戸惑いの声もあるよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「AIサービスの新機能、正直追いきれてない部分もあります（笑）。でも便利になってる実感はあるので、少しずつ試しながらキャッチアップしていきたいですね」みたいに、正直な戸惑い＋前向きさで答えると自然だよ。</p></div><p class="source-line">🔗 情報源：<a href="https://awak.co.jp/articles/ai-news-aug-2-3-2026" target="_blank" rel="noopener">Awak「AIニュース速報（2026年8月2〜3日）」</a></p></article>
+<article class="article"><span class="genre-tag">経済・お金</span><h3>東京株式市場、AI関連の半導体株が主導して上昇局面に</h3><h4>何が起きた？</h4><p>2026年8月の日本株市場、AI需要拡大への期待を背景に、半導体関連株が相場上昇を主導してるよ。東京エレクトロンやアドバンテストみたいな関連銘柄に資金が流入してるんだって。一方で、日本企業の対外直接投資の拡大とか「デジタル赤字」みたいな、構造的な円売り圧力も指摘されてる状況。</p><h4>世間の反応</h4><p>AI関連株の値上がりを歓迎する投資家目線の声がある一方、実体経済（給料とか生活実感）にはまだそこまで反映されてない、っていう温度差を感じる人も多いテーマだよ。</p><h4>論点</h4><p>株高が実感につながらない「株価と生活実感の乖離」っていう、昔からよくある議論の材料になるよ。投資してる人としてない人でも受け止め方が変わってくるポイント。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「半導体株が上がってるって聞いても、正直自分の生活にはまだ実感ないですね。投資してる人は嬉しいと思うんですけど、給料に反映されるにはもう少し時間がかかりそうだなと思ってます」みたいに、株高と生活実感のギャップに触れると答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.ebc.com/jp/forex/306286.html" target="_blank" rel="noopener">EBC Financial Group「日本株は上昇局面へ?日銀政策・長期金利・AI相場から見る8月相場の投資戦略」</a></p></article>
+<article class="article"><span class="genre-tag">社会・生活</span><h3>夏の甲子園2026、開幕を2日後に控えて注目カードに期待の声</h3><h4>何が起きた？</h4><p>第108回全国高等学校野球選手権大会（夏の甲子園）が8月5日に開幕するのを控えて、話題が盛り上がってるよ。28年ぶりの夏の頂点を狙う横浜（神奈川）と、連覇を目指す沖縄尚学が優勝候補の筆頭に挙げられてて、大会6日目には早くもこの2校が対戦する組み合わせが決まってて、記者座談会でも「初戦から決勝戦のような好カード」って評判になってるんだって。今年から高校野球でも指名打者（DH）制が初めて導入される、っていう新しい試みもあるよ。</p><h4>世間の反応</h4><p>毎年恒例の夏の風物詩として、開幕前から注目カードへの期待が高まる時期。DH制導入については「高校野球らしさが変わるのでは」っていう声と、「選手の負担軽減になっていい」っていう声、両方あるみたい。</p><h4>論点</h4><p>高校野球の伝統的なスタイルを守りたい気持ちと、選手の健康・怪我のリスクを考えて制度を近代化すべきっていう考え方の対立が、DH制導入を巡る議論の背景にあるよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「甲子園、毎年見ちゃいますね。DH制導入は最初違和感あるかなと思ったんですけど、投手の負担が減るのはいいことだなと思います」みたいに、伝統への愛着＋制度変更への理解を示すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.hb-nippon.com/articles/15823" target="_blank" rel="noopener">高校野球ドットコム「夏の甲子園ベスト8を大胆予想！全ブロックで意見激突、全員一致ゼロの“戦国大会”となるか」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-02" data-search="テック・AI OpenAI ユーザー数10億人・導入企業200万社を突破  加速か減速か 論争にも一石 国際・時事 アメリカのロボタクシー政策 連邦と地方で足並みが分岐 仕事・キャリア 2026年下半期の転職市場 AI・半導体人材は賃金上昇続く一方で格差も">
+      <summary>
+        <span class="issue-badge">8/2</span>
+        <span>
+          <span class="issue-headline">OpenAI、ユーザー数10億人・導入企…</span>
+          <span class="issue-sub">OpenAI、ユーザー数10億人・導入企業200万社を突破、「加速か減速か」論争にも一石／アメリカのロボタクシー政策、連邦と地方で足並みが分岐／2026年下半期の転職市場、AI・半導体人材は賃金上昇続く一方で格差も　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">テック・AI</span><h3>OpenAI、ユーザー数10億人・導入企業200万社を突破、「加速か減速か」論争にも一石</h3><h4>何が起きた？</h4><p>OpenAIが、アクティブユーザー<strong>10億人</strong>・導入企業<strong>200万社</strong>を突破したって公表したよ。すごい数字だよね。同じタイミングで、サム・アルトマンCEOが提唱してる「AI開発をどのくらいのペースで進めるべきか」っていう減速論争についても、「加速か減速か」の二項対立の枠組み自体に疑問を投げかける発言をしてるんだって。</p><h4>世間の反応</h4><p>ユーザー数・導入企業数の規模の大きさに驚く声が中心。一方でAI業界の中では、成長のペースをどう捉えるかについての議論が続いてる感じだよ。</p><h4>論点</h4><p>急成長を評価する声がある一方、これだけ急速に普及すると社会の受け止めが追いつくのかっていう慎重論もあるよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「200万社が導入してるって聞くと、AIってもう一部の先進的な企業だけの話じゃなくなったんだなと思います。うちの会社でも使う場面が増えてきたので、規模感として納得です」みたいに、身近な実感を添えると答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://awak.co.jp/articles/ai-news-aug-2-3-2026" target="_blank" rel="noopener">Awak「AIニュース速報（2026年8月2〜3日）」</a></p></article>
+<article class="article"><span class="genre-tag">国際・時事</span><h3>アメリカのロボタクシー政策、連邦と地方で足並みが分岐</h3><div class="glossary"><strong>用語解説：ロボタクシーって何？</strong><br />運転手なしで自動運転するタクシーのことだよ。アメリカの一部都市ではもう実際に街中を走ってて、安全性や事故時の責任の所在なんかを巡って、国と自治体それぞれでルール作りが進んでるんだ。</div><h4>何が起きた？</h4><p>アメリカで、無人運転の「ロボタクシー」に関する政策の方向性が、連邦政府と地方自治体とで足並みが揃わなくなってきてるみたい。国レベルでは推進したい思惑がある一方、地方自治体レベルでは安全面への懸念から慎重な対応を取るところも出てきてるんだって。</p><h4>世間の反応</h4><p>自動運転技術そのものへの期待は根強い一方、実際に街中を走る段階になると「本当に安全なの？」っていう不安の声も出てくる、っていう典型的な新技術受容のパターンが見られるテーマだよ。</p><h4>論点</h4><p>技術革新をどんどん進めたい推進派と、安全性の検証が先だっていう慎重派の対立構図。国と地方で判断が割れること自体が、この技術のリスク評価の難しさを表してるとも言えるよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「ロボタクシーって夢のある技術だと思う反面、まだ事故のニュースとかも聞くので、慎重な自治体の判断も分かる気がします。日本に来るのはもう少し先になりそうですね」みたいに、期待と慎重さの両方に触れると答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://awak.co.jp/articles/ai-news-aug-2-3-2026" target="_blank" rel="noopener">Awak「AIニュース速報（2026年8月2〜3日）」</a></p></article>
+<article class="article"><span class="genre-tag">仕事・キャリア</span><h3>2026年下半期の転職市場、AI・半導体人材は賃金上昇続く一方で格差も</h3><h4>何が起きた？</h4><p>2026年の転職市場、賃金上昇のペースは1.5〜2.5%程度の安定推移が見通されてるみたい。ただ産業によって差が大きくて、AI関連・半導体関連みたいな成長産業では賃金上昇が続く一方、一部の従来型職種では上昇が鈍化・横ばいになってるんだって。求職者が転職先を選ぶときも、給与や福利厚生だけじゃなくて、柔軟な働き方やキャリア形成支援、教育制度みたいなポイントを重視する傾向が強まってるよ。</p><h4>世間の反応</h4><p>成長産業とそれ以外の職種で賃金格差が広がってることについて、「頑張ってるのに給料が上がらない」っていう不公平感を感じる人が一定数いる一方、「スキルを身につければチャンスがある時代」っていう前向きな捉え方もあるみたい。</p><h4>論点</h4><p>産業構造の変化に対応できる人とできない人の格差が広がることへの懸念と、「だからこそリスキリングが重要」っていう前向きな捉え方、両方の視点があるよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「AI関連の職種はどんどん給料上がってるって聞くと焦りもありますけど、逆に言えば今からでもスキルを身につければチャンスがあるってことだと前向きに捉えたいです」みたいに、危機感＋前向きさをセットで話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://umai-jinji.jp/column/market-202608/" target="_blank" rel="noopener">ウマい人事「2026年8月求人市場動向」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="topics-2026-08-01" data-search="経済・お金 8月スタートから値上げラッシュが本格化 食品1,898品目に 社会・生活 熊本地震から間もなく1週間 断水と酷暑の中の避難生活が続く テック・AI GoogleのAI Gemini  月間利用者が10億人を突破">
+      <summary>
+        <span class="issue-badge">8/1</span>
+        <span>
+          <span class="issue-headline">8月スタートから値上げラッシュが本格化、…</span>
+          <span class="issue-sub">8月スタートから値上げラッシュが本格化、食品1,898品目に／熊本地震から間もなく1週間、断水と酷暑の中の避難生活が続く／GoogleのAI「Gemini」、月間利用者が10億人を突破　全3件</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><span class="genre-tag">経済・お金</span><h3>8月スタートから値上げラッシュが本格化、食品1,898品目に</h3><h4>何が起きた？</h4><p>帝国データバンクの調査によると、主要食品メーカー195社の2026年8月の値上げ品目、月初時点で<strong>1,898品目</strong>にのぼるみたい（9月にはさらに3,029品目が予定されてるんだって）。冷凍食品、小麦粉、パスタ、乾麺、ハム・ソーセージ、缶詰、即席麺、コーヒーとか、毎日使う食品が軒並み対象。牛肉やホタテは最大+29%の値上げ予測も出てるよ。夏の電気代は、原油高の影響が出る一方で政府の補助金も増額されてて、ある程度は相殺される見込みらしい。</p><h4>世間の反応</h4><p>8月に入るたびに「またか」っていう値上げ疲れの声が広がる時期だよ。特に毎日の食卓に直結する食品が中心だから、家計への実感が強いみたい。</p><h4>論点</h4><p>原材料高・物流費高という企業側の事情への理解と、「賃上げが追いついてない」という生活実感のギャップが、値上げが話題になるたびに繰り返し出てくる論点だよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「8月から始まった値上げ、正直また来たかって感じです。企業の事情も分かるんですけど、生活防衛のために買い方を工夫するしかないなと思ってます」みたいに、理解＋生活防衛の工夫をセットで話すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://plastic-pallet.co.jp/price-hike-list-2026-august/" target="_blank" rel="noopener">プラスチックパレット株式会社「2026年8月から値上がりするもの一覧、食品2,311品目・紙製品15％以上と9月4,531品目」</a></p></article>
+<article class="article"><span class="genre-tag">社会・生活</span><h3>熊本地震から間もなく1週間、断水と酷暑の中の避難生活が続く</h3><div class="glossary"><strong>用語解説：断水戸数って何？</strong><br />地震で水道管が壊れたりして、水道が使えなくなってる家（世帯）の数のことだよ。復旧が進むにつれてこの数字が減っていくから、「まだ〇万戸で断水中」っていう報道は、復旧のペースを知る目安になるんだ。</div><h4>何が起きた？</h4><p>7月28日に発生した最大震度7の「令和8年熊本地震」から、もうすぐ1週間。国土交通省が継続的に被害状況を報告してて、断水はまだ数万戸規模で続いてるみたい。避難者も数千人規模で、避難所生活が続いてる状況。真夏の暑さの中での避難生活だから、熱中症のリスクとも隣り合わせなんだって。</p><h4>世間の反応</h4><p>発災直後の緊急支援フェーズから、生活再建・インフラ復旧フェーズへの関心の移り変わりが見られる時期だよ。「暑い中の避難所生活、本当に大変そう」っていう同情的な反応が中心。</p><h4>論点</h4><p>被災地支援そのものへの賛否はないけど、「復旧のスピードをどう上げるか」「猛暑と重なった災害への備えは十分か」っていう、防災・インフラ整備の在り方についての議論の材料になるテーマだよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「震災のニュース、時間が経つと報道が減っていくけど、実際はまだ断水とか避難生活が続いてるんですよね。猛暑と災害が重なるとより大変だなと感じます」みたいに、報道の風化への気づき＋共感を示すと答えやすいよ。</p></div><p class="source-line">🔗 情報源：<a href="https://www.mlit.go.jp/saigai/saigai_260728.html" target="_blank" rel="noopener">国土交通省「令和８年熊本地震における被害と対応について」</a></p></article>
+<article class="article"><span class="genre-tag">テック・AI</span><h3>GoogleのAI「Gemini」、月間利用者が10億人を突破</h3><h4>何が起きた？</h4><p>Googleの対話型AI「Gemini」の月間利用者数が<strong>10億人</strong>を突破したんだって。生成AIの利用者数としてかなりのマイルストーンだよ。あわせてGoogleは新モデルの提供も進めてて、AI業界全体が「みんな当たり前にAIを使う」フェーズに入ってきてる感じがするニュース。</p><h4>世間の反応</h4><p>生成AIの普及スピードの速さに驚く声が多いテーマだよ。数年前は物珍しかった生成AIが、もう「日常的に10億人が使うツール」になったっていう時代の変化を象徴する話題として扱われてるみたい。</p><h4>論点</h4><p>便利になる一方で、「AIに頼りすぎて自分で考える力が落ちるんじゃないか」っていう懸念の声と、「単なる道具として使いこなせばいい」っていう楽観的な見方の両方があるよ。</p><h4>もし聞かれたら、こう答えられる</h4><div class="answer-box"><span class="answer-label">💬 一言コメント案</span><p>「10億人がAIを日常的に使ってるって聞くと、もうAIって特別なものじゃなくなったんだなと感じます。自分も検索代わりに使うことが増えたので、実感としても納得です」みたいに、実感を交えて答えると自然だよ。</p></div><p class="source-line">🔗 情報源：<a href="https://awak.co.jp/articles/ai-news-aug-2-3-2026" target="_blank" rel="noopener">Awak「AIニュース速報（2026年8月2〜3日）」</a></p></article>
+      </div>
+    </details>
+    <p class="empty-state" id="empty-state" hidden>該当する日が見つかりませんでした。別のキーワードで試してみてね。</p>
+  </main>
+
+  <footer>
+    <p>労務ニュースとは別ジャンルの、幅広い一般ニュース＋世間の反応を毎日まとめています。<br />事実の要約だけでなく、賛否や論点まで整理して、会話のネタになることを目指しています。</p>
+    <p>反応は実際の検索結果に基づくもので、個別の生の声を創作することはありません。</p>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var issues = Array.prototype.slice.call(document.querySelectorAll('.issue'));
+    var jumpTargets = Array.prototype.slice.call(document.querySelectorAll('.issue'));
+    var input = document.getElementById('search');
+    var countEl = document.getElementById('result-count');
+    var emptyEl = document.getElementById('empty-state');
+    var ribbonBtn = document.getElementById('ribbon-btn');
+    var ribbonPanel = document.getElementById('ribbon-panel');
+    var ribbonLinks = document.getElementById('ribbon-links');
+
+    function normalize(s) { return (s || '').toLowerCase(); }
+
+    function applyFilter() {
+      var q = normalize(input.value).trim();
+      var visible = 0;
+      issues.forEach(function (issue) {
+        var haystack = normalize(issue.dataset.search + ' ' + issue.querySelector('.issue-headline').textContent);
+        var match = q === '' || haystack.indexOf(q) !== -1;
+        issue.hidden = !match;
+        if (match) visible++;
+      });
+      emptyEl.hidden = visible !== 0;
+      countEl.textContent = q === '' ? '' : visible + ' 件ヒット';
+    }
+    input.addEventListener('input', applyFilter);
+
+    jumpTargets.forEach(function (item) {
+      var badgeEl = item.querySelector('.issue-badge');
+      var headlineEl = item.querySelector('.issue-headline');
+      var badge = badgeEl ? badgeEl.textContent : '';
+      var headline = headlineEl ? headlineEl.textContent : '';
+      var a = document.createElement('a');
+      a.href = '#' + item.id;
+      a.innerHTML = '<span class="rp-badge">' + badge + '</span><span>' + headline.slice(0, 16) + '…</span>';
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        item.open = true;
+        item.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        closeRibbon();
+      });
+      ribbonLinks.appendChild(a);
+    });
+
+    function openRibbon() { ribbonPanel.classList.add('open'); ribbonBtn.setAttribute('aria-expanded', 'true'); }
+    function closeRibbon() { ribbonPanel.classList.remove('open'); ribbonBtn.setAttribute('aria-expanded', 'false'); }
+    ribbonBtn.addEventListener('click', function () {
+      if (ribbonPanel.classList.contains('open')) closeRibbon(); else openRibbon();
+    });
+    document.addEventListener('click', function (e) { if (!e.target.closest('.ribbon-wrap')) closeRibbon(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeRibbon(); });
+  })();
+</script>
+</body>
+</html>

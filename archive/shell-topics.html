@@ -1,0 +1,408 @@
+<!--
+  daily-topics（時事おしゃべりネタ）アーカイブページの「型」
+
+  これはGitHub Pagesで公開する静的ページの土台（デザイン部分）。
+  scripts/build_archive.py（Python・AI不使用）が、このファイルを読み込み、
+  daily-topics/*.md を変換した記事HTMLを <!-- ISSUES_GO_HERE --> の位置に差し込んで、
+  docs/index.html を組み立てる。GitHub Actionsがそれをそのまま公開する
+  （2026-08-25〜、旧Artifact方式からの移行後の仕組み。詳しくは archive/AUTOBUILD.md 参照）。
+
+  labor news（roumu-newsリポジトリの archive/shell.html）と同じ仕組み・同じルールで
+  作られた姉妹ページ。構造・検索・左リボンのクイックジャンプなどの仕組みは共通だが、
+  ジャンルが違うので配色・見出し・記事フォーマットだけを変えてある。
+
+  差し込み時に置換するプレースホルダー：
+    {{ISSUE_COUNT}}  → "全N号" のN
+    {{ISSUE_RANGE}}  → "創刊 2026年8月25日" のような表示
+  詳しい変換ルールは archive/BUILD-TOPICS.md を参照。
+-->
+<title>時事おしゃべりネタ帳 — アーカイブ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20rx%3D%2722%27%20fill%3D%27%23f6f2e7%27/%3E%3Ctext%20x%3D%2750%27%20y%3D%2758%27%20font-size%3D%2756%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3E%F0%9F%92%AC%3C/text%3E%3C/svg%3E" />
+<style>
+  :root {
+    --bg: #f6f2e7;
+    --bg-blob-1: #f3d9a6;
+    --bg-blob-2: #b9d6de;
+    --card: #ffffff;
+    --card-border: #e8ddc4;
+    --ink: #2e2a22;
+    --ink-soft: #8c8368;
+    --amber: #d98a2b;
+    --amber-ink: #ffffff;
+    --steel: #3f7d8c;
+    --sage: #6a9c5f;
+    --shadow: rgba(60, 45, 20, 0.14);
+    --focus: #3f7d8c;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1c1912;
+      --bg-blob-1: #4a3a1c;
+      --bg-blob-2: #1c343c;
+      --card: #262119;
+      --card-border: #3a3226;
+      --ink: #f2ead9;
+      --ink-soft: #b8ac8e;
+      --amber: #f0a94a;
+      --amber-ink: #2a1d08;
+      --steel: #7fc0cf;
+      --sage: #8fc47f;
+      --shadow: rgba(0, 0, 0, 0.4);
+      --focus: #7fc0cf;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #1c1912;
+    --bg-blob-1: #4a3a1c;
+    --bg-blob-2: #1c343c;
+    --card: #262119;
+    --card-border: #3a3226;
+    --ink: #f2ead9;
+    --ink-soft: #b8ac8e;
+    --amber: #f0a94a;
+    --amber-ink: #2a1d08;
+    --steel: #7fc0cf;
+    --sage: #8fc47f;
+    --shadow: rgba(0, 0, 0, 0.4);
+    --focus: #7fc0cf;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", "Hiragino Sans", sans-serif;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .bg-blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.55;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .bg-blob.one { width: 30rem; height: 30rem; top: -12rem; right: -10rem; background: var(--bg-blob-1); }
+  .bg-blob.two { width: 24rem; height: 24rem; bottom: 10rem; left: -12rem; background: var(--bg-blob-2); }
+
+  a { color: var(--steel); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { color: var(--amber); }
+  a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 1.4rem 6rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero { text-align: center; padding-bottom: 1.6rem; }
+  .hero .badge-pill {
+    display: inline-block;
+    background: linear-gradient(120deg, var(--amber), var(--steel));
+    color: #fff;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+    font-family: "Hiragino Kaku Gothic ProN", sans-serif;
+  }
+  .hero h1 {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.1rem, 7vw, 3.1rem);
+    letter-spacing: 0.02em;
+    margin: 0.85rem 0 0.5rem;
+    text-wrap: balance;
+  }
+  .hero .tagline { color: var(--ink-soft); font-size: 1rem; margin: 0; }
+  .hero .meta-row {
+    margin-top: 1.2rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.7rem;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+    align-items: center;
+  }
+  .hero .meta-row .dot { opacity: 0.5; }
+
+  .controls { display: flex; gap: 0.6rem; align-items: center; padding: 1.6rem 0 1.8rem; }
+  .controls input[type="search"] {
+    flex: 1;
+    font: inherit;
+    font-size: 0.92rem;
+    padding: 0.75rem 1.1rem;
+    border: 1.5px solid var(--card-border);
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: 0 2px 10px var(--shadow);
+  }
+  .controls input[type="search"]::placeholder { color: var(--ink-soft); }
+  .controls .count { font-size: 0.76rem; color: var(--ink-soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  .month-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 2rem 0 1rem;
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 0.98rem;
+    color: var(--steel);
+  }
+  .month-divider::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--card-border), transparent); }
+
+  .issue {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    box-shadow: 0 6px 22px var(--shadow);
+    padding: 1.3rem 1.4rem;
+    margin-bottom: 1rem;
+  }
+  .issue > summary {
+    list-style: none;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.9rem;
+    align-items: start;
+  }
+  .issue > summary::-webkit-details-marker { display: none; }
+  .issue-badge {
+    background: linear-gradient(135deg, var(--amber), var(--steel));
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    margin-top: 0.1rem;
+  }
+  .issue-headline {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-weight: 700;
+    font-size: 1.12rem;
+    text-wrap: balance;
+  }
+  .issue-sub { display: block; font-family: inherit; font-weight: 400; font-size: 0.85rem; color: var(--ink-soft); margin-top: 0.35rem; }
+  .issue-toggle { font-size: 0.8rem; color: var(--steel); align-self: center; transform: rotate(0deg); transition: transform 0.18s ease; }
+  .issue[open] .issue-toggle { transform: rotate(180deg); }
+  .issue-body { margin-top: 1.5rem; padding-top: 1.3rem; border-top: 1px dashed var(--card-border); }
+
+  .article + .article { margin-top: 2.2rem; padding-top: 2rem; border-top: 1px solid var(--card-border); }
+  .genre-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--steel);
+    background: color-mix(in srgb, var(--steel) 14%, var(--card));
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    margin-bottom: 0.6rem;
+  }
+  .article h3 {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    line-height: 1.55;
+    margin: 0 0 0.9rem;
+    text-wrap: balance;
+  }
+  .glossary {
+    background: color-mix(in srgb, var(--steel) 12%, var(--card));
+    border-left: 4px solid var(--steel);
+    padding: 0.9rem 1.1rem;
+    border-radius: 0 14px 14px 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    margin: 0 0 1.2rem;
+  }
+  .glossary strong { color: var(--ink); }
+  .article h4 { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage); font-weight: 700; margin: 1.35rem 0 0.55rem; }
+  .article p { margin: 0 0 1rem; max-width: 42em; }
+  .answer-box {
+    background: color-mix(in srgb, var(--amber) 12%, var(--card));
+    border: 1.5px dashed color-mix(in srgb, var(--amber) 55%, var(--card-border));
+    border-radius: 14px;
+    padding: 1rem 1.15rem;
+    margin: 0.4rem 0 1rem;
+  }
+  .answer-box p { margin: 0; max-width: none; }
+  .answer-box .answer-label {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--amber);
+    margin-bottom: 0.4rem;
+  }
+  .source-line { margin-top: 1.1rem; font-size: 0.85rem; color: var(--ink-soft); }
+  .empty-state { text-align: center; padding: 2.5rem 0; color: var(--ink-soft); font-size: 0.9rem; }
+
+  footer {
+    margin-top: 2.6rem;
+    padding: 1.6rem;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    text-align: center;
+    line-height: 1.9;
+  }
+
+  .ribbon-wrap { position: fixed; left: 0; top: 50%; transform: translateY(-50%); z-index: 50; display: flex; align-items: center; }
+  .ribbon-tab {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+    font-weight: 700;
+    background: linear-gradient(160deg, var(--amber), var(--steel));
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 1.5rem 0.6rem 1.9rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.16em;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    box-shadow: 3px 4px 16px var(--shadow);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 86%, 0 100%);
+  }
+  .ribbon-panel {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 0 16px 16px 0;
+    box-shadow: 4px 6px 20px var(--shadow);
+    padding: 0.9rem;
+    min-width: 12rem;
+    max-height: 60vh;
+    overflow-y: auto;
+    display: none;
+  }
+  .ribbon-panel.open { display: block; }
+  .ribbon-panel .rp-title { font-size: 0.72rem; letter-spacing: 0.1em; color: var(--ink-soft); text-transform: uppercase; margin: 0 0 0.6rem; }
+  .ribbon-panel a { display: flex; gap: 0.5rem; align-items: baseline; padding: 0.4rem 0.3rem; border-radius: 8px; font-size: 0.85rem; color: var(--ink); text-decoration: none; }
+  .ribbon-panel a:hover { background: color-mix(in srgb, var(--steel) 15%, var(--card)); color: var(--ink); }
+  .ribbon-panel a .rp-badge { font-size: 0.68rem; font-weight: 700; color: var(--amber); white-space: nowrap; }
+  .ribbon-panel .rp-top { display: block; margin-top: 0.5rem; padding-top: 0.6rem; border-top: 1px solid var(--card-border); font-size: 0.8rem; color: var(--steel); font-weight: 700; }
+
+  @media (max-width: 560px) { .ribbon-tab { padding: 1.1rem 0.5rem 1.5rem; font-size: 0.72rem; } }
+  @media (prefers-reduced-motion: reduce) { .issue-toggle { transition: none; } }
+</style>
+
+<div class="bg-blob one" aria-hidden="true"></div>
+<div class="bg-blob two" aria-hidden="true"></div>
+
+<div class="ribbon-wrap">
+  <button class="ribbon-tab" id="ribbon-btn" aria-expanded="false" aria-controls="ribbon-panel">アーカイブ</button>
+  <nav class="ribbon-panel" id="ribbon-panel">
+    <p class="rp-title">日を選ぶ</p>
+    <div id="ribbon-links"></div>
+    <a href="#top" class="rp-top">▲ トップへ戻る</a>
+  </nav>
+</div>
+
+<div class="wrap" id="top">
+
+  <header class="hero">
+    <span class="badge-pill">DAILY TALK TOPICS</span>
+    <h1>時事おしゃべりネタ帳</h1>
+    <p class="tagline">面接や雑談の「〇〇どう思う？」に答えるための、世間の反応つきニュースまとめ</p>
+    <div class="meta-row">
+      <span id="issue-range">{{ISSUE_RANGE}}</span>
+      <span class="dot">・</span>
+      <span id="issue-count">全{{ISSUE_COUNT}}日分</span>
+    </div>
+  </header>
+
+  <div class="controls">
+    <input type="search" id="search" placeholder="🔍 見出し・キーワードで検索（値上げ、AI、炎上…）" />
+    <span class="count" id="result-count"></span>
+  </div>
+
+  <main id="archive">
+<!-- ISSUES_GO_HERE -->
+    <p class="empty-state" id="empty-state" hidden>該当する日が見つかりませんでした。別のキーワードで試してみてね。</p>
+  </main>
+
+  <footer>
+    <p>労務ニュースとは別ジャンルの、幅広い一般ニュース＋世間の反応を毎日まとめています。<br />事実の要約だけでなく、賛否や論点まで整理して、会話のネタになることを目指しています。</p>
+    <p>反応は実際の検索結果に基づくもので、個別の生の声を創作することはありません。</p>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var issues = Array.prototype.slice.call(document.querySelectorAll('.issue'));
+    var jumpTargets = Array.prototype.slice.call(document.querySelectorAll('.issue'));
+    var input = document.getElementById('search');
+    var countEl = document.getElementById('result-count');
+    var emptyEl = document.getElementById('empty-state');
+    var ribbonBtn = document.getElementById('ribbon-btn');
+    var ribbonPanel = document.getElementById('ribbon-panel');
+    var ribbonLinks = document.getElementById('ribbon-links');
+
+    function normalize(s) { return (s || '').toLowerCase(); }
+
+    function applyFilter() {
+      var q = normalize(input.value).trim();
+      var visible = 0;
+      issues.forEach(function (issue) {
+        var haystack = normalize(issue.dataset.search + ' ' + issue.querySelector('.issue-headline').textContent);
+        var match = q === '' || haystack.indexOf(q) !== -1;
+        issue.hidden = !match;
+        if (match) visible++;
+      });
+      emptyEl.hidden = visible !== 0;
+      countEl.textContent = q === '' ? '' : visible + ' 件ヒット';
+    }
+    input.addEventListener('input', applyFilter);
+
+    jumpTargets.forEach(function (item) {
+      var badgeEl = item.querySelector('.issue-badge');
+      var headlineEl = item.querySelector('.issue-headline');
+      var badge = badgeEl ? badgeEl.textContent : '';
+      var headline = headlineEl ? headlineEl.textContent : '';
+      var a = document.createElement('a');
+      a.href = '#' + item.id;
+      a.innerHTML = '<span class="rp-badge">' + badge + '</span><span>' + headline.slice(0, 16) + '…</span>';
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        item.open = true;
+        item.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        closeRibbon();
+      });
+      ribbonLinks.appendChild(a);
+    });
+
+    function openRibbon() { ribbonPanel.classList.add('open'); ribbonBtn.setAttribute('aria-expanded', 'true'); }
+    function closeRibbon() { ribbonPanel.classList.remove('open'); ribbonBtn.setAttribute('aria-expanded', 'false'); }
+    ribbonBtn.addEventListener('click', function () {
+      if (ribbonPanel.classList.contains('open')) closeRibbon(); else openRibbon();
+    });
+    document.addEventListener('click', function (e) { if (!e.target.closest('.ribbon-wrap')) closeRibbon(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeRibbon(); });
+  })();
+</script>
