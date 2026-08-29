@@ -309,6 +309,29 @@
 
   @media (max-width: 560px) { .ribbon-tab { padding: 1.1rem 0.5rem 1.5rem; font-size: 0.72rem; } }
   @media (prefers-reduced-motion: reduce) { .issue-toggle { transition: none; } }
+
+  .request-cta {
+    text-align: center;
+    background: var(--card);
+    border: 1.5px dashed var(--card-border);
+    border-radius: 18px;
+    padding: 1.1rem 1.2rem;
+    margin-bottom: 1.6rem;
+  }
+  .request-cta p { margin: 0 0 0.7rem; font-size: 0.88rem; color: var(--ink-soft); }
+  .request-btn {
+    display: inline-block;
+    background: linear-gradient(120deg, var(--amber), var(--steel));
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.65rem 1.4rem;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 4px 14px var(--shadow);
+  }
+  .request-btn:hover { opacity: 0.9; color: #fff; }
+  .request-cta .request-note { font-size: 0.74rem; color: var(--ink-soft); margin: 0.6rem 0 0; }
 </style>
 
 <div class="bg-blob one" aria-hidden="true"></div>
@@ -339,6 +362,12 @@
   <div class="controls">
     <input type="search" id="search" placeholder="🔍 見出し・キーワードで検索（値上げ、AI、炎上…）" />
     <span class="count" id="result-count"></span>
+  </div>
+
+  <div class="request-cta">
+    <p>📮 載せてほしい記事があったら</p>
+    <a class="request-btn" href="https://github.com/harubaru74-collab/daily-news-topics/issues/new?title=&amp;body=%F0%9F%94%97%20URL%EF%BC%88%E3%81%82%E3%82%8C%E3%81%B0%E8%B2%BC%E3%81%A3%E3%81%A6%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%EF%BC%89%EF%BC%9A%0A%0A%0A%F0%9F%93%9D%20%E3%83%A1%E3%83%A2%EF%BC%88%E8%A6%8B%E5%87%BA%E3%81%97%E3%83%BB%E3%83%86%E3%83%BC%E3%83%9E%E3%83%BB%E6%B0%97%E3%81%AB%E3%81%AA%E3%81%A3%E3%81%9F%E7%82%B9%E3%81%AA%E3%81%A9%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener">記事をリクエストする</a>
+    <p class="request-note">GitHubアカウントでログインして送信してね（初回だけ少し手間）。次の号を作るときに読んで反映するよ。</p>
   </div>
 
   <main id="archive">
