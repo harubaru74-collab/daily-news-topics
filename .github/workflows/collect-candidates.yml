@@ -1,0 +1,47 @@
+name: Collect candidate topics (RSS, no AI)
+
+# 深夜2:00（JST）のClaudeルーティンより前に、候補トピックのリード一覧を
+# Google News RSSから機械的に集めておく。AIは一切使わないので費用ゼロ。
+# 詳細: scripts/collect_candidates.py / ROUTINE-TOPICS.md「候補トピックの自動収集」
+
+on:
+  schedule:
+    # 16:30 UTC = 1:30 JST（日本にサマータイムはないため常に固定）
+    - cron: "30 16 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "collect-candidates"
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Collect candidates (pure Python, stdlib only, no AI)
+        run: python3 scripts/collect_candidates.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add staging/candidates/
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Collect candidate topics for $(TZ=Asia/Tokyo date +%Y-%m-%d)"
+            git push origin main
+          fi
